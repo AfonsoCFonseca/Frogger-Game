@@ -1,0 +1,30 @@
+{
+  "name": "frogger-game",
+  "version": "1.0.0",
+  "description": "Classic Frogger game using javascript and typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AfonsoCFonseca/Frogger-Game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AfonsoCFonseca/Frogger-Game/issues"
+  },
+  "homepage": "https://github.com/AfonsoCFonseca/Frogger-Game#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "live": "^0.1.25-beta.0",
+    "phaser": "^3.22.0",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
