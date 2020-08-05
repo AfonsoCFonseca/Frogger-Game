@@ -1,4 +1,6 @@
 export const TILE_SIZE = 60
+export const PLAYER_SPEED = 10
+
 
 export const CANVAS = {
     WIDTH: null,
@@ -7,7 +9,9 @@ export const CANVAS = {
 
 export const BACKGROUND = {
     WIDTH: 840,
-    HEIGHT: 780
+    HEIGHT: 780,
+    X_TILE_SIZE: 10,
+    Y_TILE_SIZE: 11
 }
 
 export const FROG = {
