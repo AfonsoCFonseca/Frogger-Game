@@ -5,11 +5,18 @@ import { Utils } from "./Utils/utils"
 import * as consts from "./Utils/consts"
 import { directionEnum } from "./game-interfaces/directions.interface"
 
+let scene: GameScene
+export let map: Map
+
 export class GameScene extends Phaser.Scene {
 
   private cursors
   private player: Frog
-  private map: Map
+  private frogInitialPosition
+  
+  private moveKeys;
+  private keyRdy = true
+  
 
   constructor() {
     super({});
@@ -27,36 +34,72 @@ export class GameScene extends Phaser.Scene {
     consts.CANVAS.WIDTH = game.canvas.width
     consts.CANVAS.HEIGHT = game.canvas.height
 
-    consts.FROG.INITIAL_X = game.canvas.width / 2
-    consts.FROG.INITIAL_Y = game.canvas.height / 2 - Utils.tileWith( -6 )
-
+    this.frogInitialPosition = Utils.convertTileToPosition({tileX: 7, tileY: 12})
   }
 
   create() {
     this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 2  - ( consts.BACKGROUND.HEIGHT / 2), 'background').setOrigin(0, 0);
 
-    this.map = new Map()
-    this.player = new Frog({ scene: this, x: consts.FROG.INITIAL_X , y: consts.FROG.INITIAL_Y })
+    map = new Map()
+    this.player = new Frog({ scene: this, x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
-    this.cursors = this.input.keyboard.createCursorKeys();
+    this.setKeys()
   }
 
   update() {
+
     this.keys();
+
+  }
+
+  setKeys(){
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.moveKeys = this.input.keyboard.addKeys({
+      up: Phaser.Input.Keyboard.KeyCodes.W,
+      down: Phaser.Input.Keyboard.KeyCodes.S,
+      left: Phaser.Input.Keyboard.KeyCodes.A,
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+    });
+
   }
 
   keys() {
-    if (this.cursors.left.isDown) 
-      this.player.move( directionEnum.WEST )
-    else if (this.cursors.right.isDown)
-      this.player.move( directionEnum.EAST )
-    else if (this.cursors.up.isDown)
-      this.player.move( directionEnum.NORTH )
-    else if (this.cursors.down.isDown)
-      this.player.move( directionEnum.SOUTH )
+
+    window.addEventListener('keydown', () => {
+
+      this.time.delayedCall(consts.KEY_PRESSED_TIMER, () => this.keyRdy = true, [], this);
+
+      if( this.keyRdy == true ){
+        if (this.moveKeys["left"].isDown ){
+          this.player.move( directionEnum.WEST )
+        }
+        else if(this.moveKeys["right"].isDown ){
+          this.player.move( directionEnum.EAST )
+        }
+        else if(this.moveKeys["up"].isDown){
+          this.player.move( directionEnum.NORTH )
+        }
+        else if(this.moveKeys["down"].isDown){
+          this.player.move( directionEnum.SOUTH )
+        }
+      }
+
+      this.keyRdy = false
+
+    }, false);
+
+
+  }
+
+  onEvent ()
+  {
+      this.keyRdy = true
   }
 
 }
+
 
 var config = {
   type: Phaser.AUTO,

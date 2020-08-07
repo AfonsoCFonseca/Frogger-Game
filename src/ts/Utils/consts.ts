@@ -1,5 +1,8 @@
+import { Utils } from "./utils"
+
 export const TILE_SIZE = 60
 export const PLAYER_SPEED = 10
+export const KEY_PRESSED_TIMER = 300
 
 
 export const CANVAS = {
@@ -16,7 +19,5 @@ export const BACKGROUND = {
 
 export const FROG = {
     WIDTH: TILE_SIZE,
-    HEIGHT: TILE_SIZE,
-    INITIAL_X: null,
-    INITIAL_Y: null
+    HEIGHT: TILE_SIZE
 }

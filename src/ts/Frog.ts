@@ -2,19 +2,26 @@ import * as consts from "./Utils/consts"
 import { Utils } from "./Utils/utils"
 import { directionEnum } from "./game-interfaces/directions.interface";
 import { Position } from "./game-interfaces/position.interface";
+import { map } from "./App";
+import { TilePosition } from "./game-interfaces/tilePosition.inteface";
 
 export class Frog extends Phaser.GameObjects.Sprite {
 
-    currentPosition: Position
-
     constructor(config) {
         super(config.scene, config.x, config.y, "frog");
-        config.scene.add.existing(this);
+        config.scene.add.existing(this).setOrigin( 0,0 )
+    }
 
-        this.currentPosition = {
-            x: config.x,
-            y: config.y
+    public getCurrentPosition(): Position {
+        return {
+            x: this.x,
+            y: this.y
         }
+    }
+
+    public getCurrentTile() {
+        let tilePosition = Utils.convertPositionToTile( this.getCurrentPosition() ) 
+        return map.getTile( tilePosition )
     }
     
     public move( direction: directionEnum ){
@@ -39,7 +46,6 @@ export class Frog extends Phaser.GameObjects.Sprite {
                 this.y = Utils.convertTileToPosition( tilePosition ).y
             break;
         }
-
 
     }
 }

@@ -4,10 +4,6 @@ import { Position } from "../game-interfaces/position.interface"
 
 export class Utils {
 
-    public static tileWith( pos: number ): number{
-        return pos * consts.TILE_SIZE 
-    }
-
     public static convertTileToPosition( pos: TilePosition ):Position{
 
         let newPos = {
@@ -29,8 +25,8 @@ export class Utils {
         let currentYPosition =  pos.y - ((consts.CANVAS.HEIGHT / 2) - (consts.BACKGROUND.HEIGHT / 2))
 
         return {
-            tileX: currentXPosition / consts.TILE_SIZE,
-            tileY: currentYPosition / consts.TILE_SIZE,
+            tileX: Math.floor( currentXPosition / consts.TILE_SIZE ),  
+            tileY: Math.floor( currentYPosition / consts.TILE_SIZE )
         }
     }
 }

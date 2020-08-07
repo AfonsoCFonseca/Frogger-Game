@@ -1,5 +1,6 @@
 import { Tile } from "../Tile";
 import * as consts from "../Utils/consts"
+import { TilePosition } from "../game-interfaces/tilePosition.inteface";
 
 export class Map {
 
@@ -24,6 +25,10 @@ export class Map {
 
     public getMap(){
         return this.map
+    }
+
+    public getTile({ tileX, tileY}: TilePosition ):Tile{
+        return this.map[tileX][tileY]
     }
 
 }
