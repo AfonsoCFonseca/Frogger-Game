@@ -1,6 +1,6 @@
 const path = require('path');
 module.exports = {
-  entry: './src/ts/app.ts',
+  entry: './src/ts/App.ts',
   module: {
     rules: [
       {
@@ -9,7 +9,7 @@ module.exports = {
         exclude: /node_modules/
       }
     ]
-  },
+  },  
   resolve: {
     extensions: [ '.ts', '.tsx', '.js' ]
   },

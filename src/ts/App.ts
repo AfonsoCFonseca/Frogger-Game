@@ -2,26 +2,27 @@ import 'phaser'
 import { Frog } from "./Frog";
 import { Map } from "./Map/Map";
 import { Utils } from "./Utils/utils"
+import { EnemyHandler } from "./Enemies/EnemyHandler"
 import * as consts from "./Utils/consts"
 import { directionEnum } from "./game-interfaces/directions.interface"
+import { Position } from "./game-interfaces/position.interface"
+import { enemyType } from './game-interfaces/enemy.interface';
 
-export let scene: GameScene
 export let map: Map
+export let scene;
 
 export class GameScene extends Phaser.Scene {
 
   private cursors
   private player: Frog
-  private frogInitialPosition
+  private frogInitialPosition: Position
+  private enemyHandler: EnemyHandler
   
   private moveKeys;
   private keyRdy = true
   
-
   constructor() {
     super({});
-    scene = this
-
   }
 
   preload() {
@@ -31,19 +32,27 @@ export class GameScene extends Phaser.Scene {
       frameHeight: 60,
     });
 
+    this.load.spritesheet("cars", "assets/cars.png", {
+      frameWidth: 60,
+      frameHeight: 60,
+    });
+
     consts.CANVAS.WIDTH = game.canvas.width
     consts.CANVAS.HEIGHT = game.canvas.height
 
     this.frogInitialPosition = Utils.convertTileToPosition({tileX: 7, tileY: 12})
+    scene = this
   }
 
   create() {
     this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 2  - ( consts.BACKGROUND.HEIGHT / 2), 'background').setOrigin(0, 0);
 
     map = new Map()
-    this.player = new Frog({ scene: this, x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
+    this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
     this.setKeys()
+    // this.enemyHandler = new EnemyHandler( )
+
   }
 
   update() {
@@ -97,7 +106,7 @@ export class GameScene extends Phaser.Scene {
 
 }
 
-var config = {
+export var config = {
   type: Phaser.AUTO,
   width: "150%",
   height: "180%",

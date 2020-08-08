@@ -29,4 +29,8 @@ export class Utils {
             tileY: Math.floor( currentYPosition / consts.TILE_SIZE )
         }
     }
+
+    public static generateId():string {
+        return '_' + Math.random().toString(36).substr(2, 9);
+    }
 }
