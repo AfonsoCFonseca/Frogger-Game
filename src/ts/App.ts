@@ -5,7 +5,7 @@ import { Utils } from "./Utils/utils"
 import * as consts from "./Utils/consts"
 import { directionEnum } from "./game-interfaces/directions.interface"
 
-let scene: GameScene
+export let scene: GameScene
 export let map: Map
 
 export class GameScene extends Phaser.Scene {
@@ -20,6 +20,7 @@ export class GameScene extends Phaser.Scene {
 
   constructor() {
     super({});
+    scene = this
 
   }
 
@@ -29,7 +30,6 @@ export class GameScene extends Phaser.Scene {
       frameWidth: 60,
       frameHeight: 60,
     });
-
 
     consts.CANVAS.WIDTH = game.canvas.width
     consts.CANVAS.HEIGHT = game.canvas.height
@@ -69,19 +69,21 @@ export class GameScene extends Phaser.Scene {
 
     window.addEventListener('keydown', () => {
 
-      this.time.delayedCall(consts.KEY_PRESSED_TIMER, () => this.keyRdy = true, [], this);
+      this.time.delayedCall(consts.KEY_PRESSED_TIMER, () => {
+        this.keyRdy = true
+      }, [], this);
 
       if( this.keyRdy == true ){
-        if (this.moveKeys["left"].isDown ){
+        if (this.moveKeys["left"].isDown && this.player.getCurrentTilePosition().tileX > 0 ){
           this.player.move( directionEnum.WEST )
         }
-        else if(this.moveKeys["right"].isDown ){
+        else if(this.moveKeys["right"].isDown && this.player.getCurrentTilePosition().tileX < consts.BACKGROUND.X_TILE_SIZE - 1){
           this.player.move( directionEnum.EAST )
         }
-        else if(this.moveKeys["up"].isDown){
+        else if(this.moveKeys["up"].isDown && this.player.getCurrentTilePosition().tileY > 0){
           this.player.move( directionEnum.NORTH )
         }
-        else if(this.moveKeys["down"].isDown){
+        else if(this.moveKeys["down"].isDown && this.player.getCurrentTilePosition().tileY < consts.BACKGROUND.Y_TILE_SIZE - 1){
           this.player.move( directionEnum.SOUTH )
         }
       }
@@ -93,13 +95,7 @@ export class GameScene extends Phaser.Scene {
 
   }
 
-  onEvent ()
-  {
-      this.keyRdy = true
-  }
-
 }
-
 
 var config = {
   type: Phaser.AUTO,

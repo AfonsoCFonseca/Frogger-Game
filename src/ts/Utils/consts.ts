@@ -13,11 +13,12 @@ export const CANVAS = {
 export const BACKGROUND = {
     WIDTH: 840,
     HEIGHT: 780,
-    X_TILE_SIZE: 10,
-    Y_TILE_SIZE: 11
+    X_TILE_SIZE: 14,
+    Y_TILE_SIZE: 13
 }
 
 export const FROG = {
     WIDTH: TILE_SIZE,
-    HEIGHT: TILE_SIZE
+    HEIGHT: TILE_SIZE,
+    MOVEMENT_ANIM_TIMER: 180
 }

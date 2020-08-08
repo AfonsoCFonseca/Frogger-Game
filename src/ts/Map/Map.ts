@@ -13,7 +13,7 @@ export class Map {
     createMap(): Tile[][]{
         let newMap = []
 
-        for( let i = 0; i < consts.BACKGROUND.X_TILE_SIZE; i++ ){
+        for( let i = 0; i < consts.BACKGROUND.X_TILE_SIZE ; i++ ){
             newMap[i] = []
             for( let j = 0; j < consts.BACKGROUND.Y_TILE_SIZE; j++ ){
                 newMap[i][j] = new Tile({tileX: i, tileY: j})
