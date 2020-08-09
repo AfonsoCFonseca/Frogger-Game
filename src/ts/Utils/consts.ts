@@ -2,6 +2,7 @@ import { Utils } from "./utils"
 
 export const TILE_SIZE = 60
 export const PLAYER_SPEED = 10
+export const CAR_SPEED = 2
 export const KEY_PRESSED_TIMER = 300
 
 

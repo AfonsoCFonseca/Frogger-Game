@@ -1,10 +1,8 @@
 import * as consts from "./Utils/consts"
 import { Utils } from "./Utils/utils"
-import { directionEnum } from "./game-interfaces/directions.interface";
-import { Position } from "./game-interfaces/position.interface";
+import { directionEnum, Position, TilePosition } from "./game.interfaces"
 import { map, scene } from "./App";
 import { Tile } from "./Tile";
-import { TilePosition } from "./game-interfaces/tilePosition.inteface";
 
 export class Frog extends Phaser.GameObjects.Sprite {
 

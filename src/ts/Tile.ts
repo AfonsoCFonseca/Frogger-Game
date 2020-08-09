@@ -1,5 +1,4 @@
-import { Position } from "./game-interfaces/position.interface";
-import { TilePosition } from "./game-interfaces/tilePosition.inteface";
+import { Position, TilePosition } from "./game.interfaces";
 import { Utils } from "./Utils/utils"
 
 export class Tile {

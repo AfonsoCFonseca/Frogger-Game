@@ -1,6 +1,6 @@
 import { Tile } from "../Tile";
 import * as consts from "../Utils/consts"
-import { TilePosition } from "../game-interfaces/tilePosition.inteface";
+import { TilePosition } from "../game.interfaces";
 
 export class Map {
 

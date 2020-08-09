@@ -4,19 +4,17 @@ import { Map } from "./Map/Map";
 import { Utils } from "./Utils/utils"
 import { EnemyHandler } from "./Enemies/EnemyHandler"
 import * as consts from "./Utils/consts"
-import { directionEnum } from "./game-interfaces/directions.interface"
-import { Position } from "./game-interfaces/position.interface"
-import { enemyType } from './game-interfaces/enemy.interface';
+import { directionEnum, enemyType, Position } from "./game.interfaces"
 
 export let map: Map
 export let scene;
+export let enemyHandler: EnemyHandler
 
 export class GameScene extends Phaser.Scene {
 
   private cursors
   private player: Frog
   private frogInitialPosition: Position
-  private enemyHandler: EnemyHandler
   
   private moveKeys;
   private keyRdy = true
@@ -51,13 +49,15 @@ export class GameScene extends Phaser.Scene {
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
     this.setKeys()
-    // this.enemyHandler = new EnemyHandler( )
+    enemyHandler = new EnemyHandler( )
 
   }
 
   update() {
 
     this.keys();
+
+    this.events.emit( "updateEnemy" );
 
   }
 

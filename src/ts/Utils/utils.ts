@@ -1,6 +1,5 @@
 import * as consts from "./consts"
-import { TilePosition } from "../game-interfaces/tilePosition.inteface"
-import { Position } from "../game-interfaces/position.interface"
+import { TilePosition, Position } from "../game.interfaces";
 
 export class Utils {
 
@@ -32,5 +31,9 @@ export class Utils {
 
     public static generateId():string {
         return '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    public static rndNumber(max: number): number {
+        return Math.floor(Math.random() * max) + 1;
     }
 }

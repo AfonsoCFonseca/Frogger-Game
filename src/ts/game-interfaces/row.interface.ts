@@ -1,1 +1,0 @@
-export type row = 'A' | 'B' | 'C' | 'D' | 'E' 
