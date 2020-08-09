@@ -14,13 +14,26 @@ The tile is the representation of a slot in the map matrix, returns position or 
 The player is a simple Phaser.Sprite class that moves around on the Tiles of Map class, can move in X and Y axis
 
 ### Enemy ###
+Made an abstract class for the Enemies that extends Phaser.Sprite and got as inheritance the class Platform and Car. The Enemy is responsible for the movement, the boundaries, deletation and communication with the class EnemyHandler
+**Platform**
+
+**Car**
+
+### Enemy Handler ###
+The Enemy Handler takes care of the creation of each enemy, what speed should have or what direction to take. It keeps track of the arrays of each enemy, when to push a new Enemy or delete an outdated one. 
+The class controls how many enemies should be in the map and balances it between the new ones and the old ones
 
 
 ---------------------------------------------------------------
 # Development
 Started by developing the Map, Player and Tile class and created a relation between them, where the map contains the structure of Tiles where the Frog ( Player ) will be able to move around or predict enemies, platforms or walls.
 
-** Frog and Prediction ** 
+** Enemies & generation ** 
+After, I started to create the Enemy, Car and EnemyHandler class. I began by setting the Car on the map, by creating it via EnemyHandler, giving him movement and reacting to the boundaries of the map.
 
 ---------------------------------------------------------------
 # Scratches & Evolution
+
+ <p float="left">
+  <img width="186" height="260" src='https://github.com/AfonsoCFonseca/Frogger-Game/blob/master/screenshots/03-08.png'>
+ </p>
