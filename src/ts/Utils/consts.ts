@@ -1,10 +1,14 @@
 import { Utils } from "./utils"
 
 export const TILE_SIZE = 60
-export const PLAYER_SPEED = 10
-export const CAR_SPEED = 2
 export const KEY_PRESSED_TIMER = 300
+export const DIFFICULTY_INCREMENT = 0.2
 
+export const CAR = {
+    SPEED: 2,
+    MIN_INTERVAL_CAR: 500,
+    MAX_INTERVAL_CAR: 1500
+}
 
 export const CANVAS = {
     WIDTH: null,

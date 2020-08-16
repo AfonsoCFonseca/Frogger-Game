@@ -15,6 +15,9 @@ export class GameScene extends Phaser.Scene {
   private cursors
   private player: Frog
   private frogInitialPosition: Position
+  private level: number
+  private enemyGroup
+  private lifes = 3;
   
   private moveKeys;
   private keyRdy = true
@@ -35,11 +38,17 @@ export class GameScene extends Phaser.Scene {
       frameHeight: 60,
     });
 
+    this.load.image("truck", "assets/truck.png");
+
     consts.CANVAS.WIDTH = game.canvas.width
     consts.CANVAS.HEIGHT = game.canvas.height
 
     this.frogInitialPosition = Utils.convertTileToPosition({tileX: 7, tileY: 12})
+    this.level = 1
     scene = this
+
+    this.enemyGroup = this.add.group();
+    this.enemyGroup.enableBody = true;
   }
 
   create() {
@@ -47,6 +56,9 @@ export class GameScene extends Phaser.Scene {
 
     map = new Map()
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
+
+    // Limpar o enemyGroup quando é removido do mapa
+    this.physics.add.collider(this.player, this.enemyGroup, this.gameOver);
 
     this.setKeys()
     enemyHandler = new EnemyHandler( )
@@ -58,6 +70,14 @@ export class GameScene extends Phaser.Scene {
     this.keys();
 
     this.events.emit( "updateEnemy" );
+
+  }
+
+  gameOver(){
+
+  }
+
+  startOver(){
 
   }
 

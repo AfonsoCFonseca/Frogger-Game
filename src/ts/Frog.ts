@@ -11,7 +11,9 @@ export class Frog extends Phaser.GameObjects.Sprite {
 
     constructor(config) {
         super( scene, config.x, config.y, "frog");
+        scene.physics.world.enable(this);
         scene.add.existing(this).setOrigin( 0,0 )
+
         this.currentDirection = directionEnum.NORTH
         this.currentAnimationFrame = 0
     }
@@ -69,8 +71,6 @@ export class Frog extends Phaser.GameObjects.Sprite {
         scene.time.delayedCall(consts.FROG.MOVEMENT_ANIM_TIMER, () => {
             this.setTexture('frog', --this.currentAnimationFrame)
         }, [], this);
-
-        console.log( this.getCurrentTile() )
 
     }
 }
