@@ -11,12 +11,13 @@ export class Car extends Enemy{
     
     constructor( type: enemyType, posTile: TilePosition, direction: directionEnum ){
         let pos = Utils.convertTileToPosition( posTile )
+        let { texture, frame } = getCarFrameAndTexture( posTile.tileY )
         let gameObj = {
             scene,
             x: pos.x,
             y: pos.y,
-            texture: "cars",
-            frame: getCarFrame( posTile.tileY ),
+            texture,
+            frame
         }
         super( type, gameObj, direction )
 
@@ -36,6 +37,12 @@ export class Car extends Enemy{
     }
 }
 
-function getCarFrame( tileY: number ): number{
-    return tileY - 6s
+function getCarFrameAndTexture( tileY: number ) :
+    { texture: string, frame: number} {
+
+        let isFirstRow =  tileY - 7 <= 0
+        return {
+            texture: isFirstRow ? "truck" : "cars",
+            frame: isFirstRow ? null : tileY - 7,
+        }
 }

@@ -13,7 +13,7 @@ export abstract class Enemy extends Phaser.GameObjects.Sprite{
 
     constructor( type: enemyType, gameObj: GameSprite, direction: directionEnum ){
         super( scene, gameObj.x, gameObj.y, gameObj.texture, gameObj.frame );
-        scene.add.existing(this).setOrigin( 0,0 )
+        scene.add.existing(this).setOrigin( 0.5,0 )
         scene.physics.world.enable(this);
 
         this.direction = direction

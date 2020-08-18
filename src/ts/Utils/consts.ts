@@ -25,5 +25,6 @@ export const BACKGROUND = {
 export const FROG = {
     WIDTH: TILE_SIZE,
     HEIGHT: TILE_SIZE,
-    MOVEMENT_ANIM_TIMER: 180
+    MOVEMENT_ANIM_TIMER: 180,
+    INITIAL_TILE_POSITION: { tileX: 7, tileY: 12 }
 }

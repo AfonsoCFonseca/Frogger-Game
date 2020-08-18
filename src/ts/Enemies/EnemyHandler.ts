@@ -13,8 +13,9 @@ export class EnemyHandler {
 
     constructor( ){
         this.generateStartingEnemies()
-        setInterval( () => this.enemyCreator() , 3000);
         this.enemyCreator()
+        
+        setInterval( () => this.enemyCreator() , 3000);
 
         this.enemyCreator = this.enemyCreator.bind( this )
     }

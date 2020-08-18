@@ -28,12 +28,16 @@ export class GameScene extends Phaser.Scene {
 
   preload() {
     this.load.image('background', 'assets/background.png');
+    this.load.image('froggertitle', 'assets/froggerTitle.png');
     this.load.spritesheet("frog", "assets/frog.png", {
       frameWidth: 60,
       frameHeight: 60,
     });
-
     this.load.spritesheet("cars", "assets/cars.png", {
+      frameWidth: 60,
+      frameHeight: 60,
+    });
+    this.load.spritesheet("death", "assets/death.png", {
       frameWidth: 60,
       frameHeight: 60,
     });
@@ -49,16 +53,20 @@ export class GameScene extends Phaser.Scene {
 
     this.enemyGroup = this.add.group();
     this.enemyGroup.enableBody = true;
+
+    this.kill = this.kill.bind( this )
   }
 
   create() {
     this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 2  - ( consts.BACKGROUND.HEIGHT / 2), 'background').setOrigin(0, 0);
+    this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 10, 'froggertitle').setOrigin(0, 0);
+
 
     map = new Map()
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
     // Limpar o enemyGroup quando é removido do mapa
-    this.physics.add.collider(this.player, this.enemyGroup, this.gameOver);
+    this.physics.add.collider(this.player, this.enemyGroup, this.kill );
 
     this.setKeys()
     enemyHandler = new EnemyHandler( )
@@ -71,6 +79,11 @@ export class GameScene extends Phaser.Scene {
 
     this.events.emit( "updateEnemy" );
 
+  }
+
+  kill(){
+    this.player.death()
+    this.lifes--
   }
 
   gameOver(){
@@ -128,7 +141,7 @@ export class GameScene extends Phaser.Scene {
 
 export var config = {
   type: Phaser.AUTO,
-  width: "150%",
+  width: "100%",
   height: "180%",
   scale: {
     mode: Phaser.Scale.FIT,
