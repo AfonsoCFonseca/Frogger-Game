@@ -11,6 +11,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
     private currentDirection: directionEnum
     private currentAnimationFrame: number
     private isDying = false
+    private animDeath
 
     constructor(config) {
         super( scene, config.x, config.y, "frog");
@@ -23,11 +24,12 @@ export class Frog extends Phaser.GameObjects.Sprite {
 
 
         scene.anims.create({
-            key: 'diamond',
+            key: 'deathAnimation',
             frames: scene.anims.generateFrameNumbers('death', { end: 2 } ),
             frameRate: 5,
             repeat: 1
         });
+
 
     }
 
@@ -91,18 +93,24 @@ export class Frog extends Phaser.GameObjects.Sprite {
     }
 
     public death() {
-        if( !this.isDying ){
-            this.play('diamond');
-            this.isDying = true
-        }
 
-        this.once('animationcomplete', () => {
-            let { x, y } = Utils.convertTileToPosition( consts.FROG.INITIAL_TILE_POSITION )
-            this.setPosition( x, y )
-            this.setDirection( directionEnum.NORTH )
-            this.setTexture("frog", 0)
-            this.isDying = false
-        })
+        if( !this.isDying ){
+
+            this.play('deathAnimation');
+            this.isDying = true
+
+            this.once('animationcomplete', () => {
+
+                let { x, y } = Utils.convertTileToPosition( consts.FROG.INITIAL_TILE_POSITION )
+                this.setPosition( x, y )
+                this.setDirection( directionEnum.NORTH )
+                this.setTexture("frog", 0)
+                scene.decrementLifes()
+                this.isDying = false
+    
+            })
+
+        }
 
 
     }

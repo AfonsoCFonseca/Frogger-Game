@@ -17,7 +17,11 @@ export class GameScene extends Phaser.Scene {
   private frogInitialPosition: Position
   private level: number
   private enemyGroup
-  private lifes = 3;
+
+  private lifes: number;
+  private lifeImages = []
+
+  private timerRect;
   
   private moveKeys;
   private keyRdy = true
@@ -29,6 +33,7 @@ export class GameScene extends Phaser.Scene {
   preload() {
     this.load.image('background', 'assets/background.png');
     this.load.image('froggertitle', 'assets/froggerTitle.png');
+    this.load.image('life', 'assets/life.png');
     this.load.spritesheet("frog", "assets/frog.png", {
       frameWidth: 60,
       frameHeight: 60,
@@ -61,12 +66,14 @@ export class GameScene extends Phaser.Scene {
     this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 2  - ( consts.BACKGROUND.HEIGHT / 2), 'background').setOrigin(0, 0);
     this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 10, 'froggertitle').setOrigin(0, 0);
 
+    this.createLifes()
+    this.startTimer()
+
 
     map = new Map()
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
-    // Limpar o enemyGroup quando é removido do mapa
-    this.physics.add.collider(this.player, this.enemyGroup, this.kill );
+    this.physics.add.overlap(this.player, this.enemyGroup, this.kill );
 
     this.setKeys()
     enemyHandler = new EnemyHandler( )
@@ -76,18 +83,38 @@ export class GameScene extends Phaser.Scene {
   update() {
 
     this.keys();
-
+    this.updateTimer()
     this.events.emit( "updateEnemy" );
 
   }
 
   kill(){
     this.player.death()
-    this.lifes--
+  }
+
+  startTimer(){
+
+    let heightBar = 30,
+    widthBar = 450,
+    y = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + heightBar,
+    x = ( game.canvas.width / 2 )
+    
+
+    this.timerRect = this.add.rectangle( x,y, widthBar,heightBar, 0x156550)
+    scene.time.delayedCall( consts.TIME_PER_LEVEL, () => {
+      //this.kill()
+    }, [], this);
+
+  }
+
+  updateTimer(){
+
+    //this.timerRect.scaleX = 3
+
   }
 
   gameOver(){
-
+    console.log("GAME OVER")
   }
 
   startOver(){
@@ -137,12 +164,35 @@ export class GameScene extends Phaser.Scene {
 
   }
 
+  createLifes(){
+
+    this.lifes = 3
+    let LIFE_TILE_SIZE = 30
+    let y = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + LIFE_TILE_SIZE
+    let xGap = ( game.canvas.width / 2 ) - (consts.BACKGROUND.WIDTH / 2)
+    for( var i = 0; i < this.lifes; i++ ){
+      let multip = i * LIFE_TILE_SIZE
+      this.lifeImages.push( this.add.image( xGap + multip, y, 'life') )
+    }
+
+  }
+
+  public decrementLifes(){
+      let currentLifeImage = this.lifeImages.pop()
+      currentLifeImage.destroy()
+      this.lifes--
+
+      if( this.lifes == 0 ){
+        this.gameOver()
+      }
+  }
+
 }
 
 export var config = {
   type: Phaser.AUTO,
-  width: "100%",
-  height: "180%",
+  width: '150%',
+  height: "150%",
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
