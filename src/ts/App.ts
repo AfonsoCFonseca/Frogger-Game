@@ -17,8 +17,9 @@ export class GameScene extends Phaser.Scene {
   private frogInitialPosition: Position
   private level: number
   private enemyGroup
+  private timePerLevel:number
 
-  private lifes: number;
+  private lives: number;
   private lifeImages = []
 
   private timerRect;
@@ -66,7 +67,13 @@ export class GameScene extends Phaser.Scene {
     this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 2  - ( consts.BACKGROUND.HEIGHT / 2), 'background').setOrigin(0, 0);
     this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 10, 'froggertitle').setOrigin(0, 0);
 
-    this.createLifes()
+    let heightTimeText = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + 12
+    let timeText = this.add.text( game.canvas.width / 2 + 240, heightTimeText, "TIME" )
+    timeText.setFontSize(35);
+
+    this.timePerLevel = consts.TIME_PER_LEVEL
+
+    this.createLives()
     this.startTimer()
 
 
@@ -98,12 +105,17 @@ export class GameScene extends Phaser.Scene {
     widthBar = 450,
     y = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + heightBar,
     x = ( game.canvas.width / 2 )
-    
 
-    this.timerRect = this.add.rectangle( x,y, widthBar,heightBar, 0x156550)
-    scene.time.delayedCall( consts.TIME_PER_LEVEL, () => {
-      //this.kill()
-    }, [], this);
+    this.add.rectangle( x,y, widthBar,heightBar, 0x156550)
+    let timerRect = this.add.rectangle( x - widthBar / 2,y, 0,heightBar, 0x000000)
+
+    this.tweens.add({
+      targets: timerRect,
+      width: widthBar,
+      repeat: -1,
+      ease: 'Linear',
+      duration: this.timePerLevel,
+    });
 
   }
 
@@ -164,25 +176,25 @@ export class GameScene extends Phaser.Scene {
 
   }
 
-  createLifes(){
+  createLives(){
 
-    this.lifes = 3
+    this.lives = 3
     let LIFE_TILE_SIZE = 30
     let y = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + LIFE_TILE_SIZE
     let xGap = ( game.canvas.width / 2 ) - (consts.BACKGROUND.WIDTH / 2)
-    for( var i = 0; i < this.lifes; i++ ){
+    for( var i = 0; i < this.lives; i++ ){
       let multip = i * LIFE_TILE_SIZE
       this.lifeImages.push( this.add.image( xGap + multip, y, 'life') )
     }
 
   }
 
-  public decrementLifes(){
+  public decrementLives(){
       let currentLifeImage = this.lifeImages.pop()
       currentLifeImage.destroy()
-      this.lifes--
+      this.lives--
 
-      if( this.lifes == 0 ){
+      if( this.lives == 0 ){
         this.gameOver()
       }
   }

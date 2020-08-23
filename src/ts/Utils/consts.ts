@@ -3,7 +3,7 @@ import { Utils } from "./utils"
 export const TILE_SIZE = 60
 export const KEY_PRESSED_TIMER = 300
 export const DIFFICULTY_INCREMENT = 0.2
-export const TIME_PER_LEVEL = 25
+export const TIME_PER_LEVEL = 25000
 
 export const CAR = {
     SPEED: 2,

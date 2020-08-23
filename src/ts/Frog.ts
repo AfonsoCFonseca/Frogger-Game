@@ -105,7 +105,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
                 this.setPosition( x, y )
                 this.setDirection( directionEnum.NORTH )
                 this.setTexture("frog", 0)
-                scene.decrementLifes()
+                scene.decrementLives()
                 this.isDying = false
     
             })
