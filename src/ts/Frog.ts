@@ -92,7 +92,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
 
     }
 
-    public death() {
+    public death( callback ) {
 
         if( !this.isDying ){
 
@@ -105,7 +105,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
                 this.setPosition( x, y )
                 this.setDirection( directionEnum.NORTH )
                 this.setTexture("frog", 0)
-                scene.decrementLives()
+                callback()
                 this.isDying = false
     
             })

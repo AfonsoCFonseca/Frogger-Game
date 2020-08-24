@@ -96,12 +96,17 @@ export class GameScene extends Phaser.Scene {
   }
 
   kill(){
-    this.player.death()
+
+    this.player.death( () => {
+      scene.decrementLives()
+    })
+
   }
 
   startTimer(){
-
-    let heightBar = 30,
+    
+    let self = this,
+    heightBar = 30,
     widthBar = 450,
     y = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + heightBar,
     x = ( game.canvas.width / 2 )
@@ -112,9 +117,11 @@ export class GameScene extends Phaser.Scene {
     this.tweens.add({
       targets: timerRect,
       width: widthBar,
-      repeat: -1,
+      repeat: 0,
       ease: 'Linear',
-      duration: this.timePerLevel,
+      //duration: this.timePerLevel,
+      duration: 1000,
+      onComplete: () => self.kill()
     });
 
   }
@@ -127,6 +134,18 @@ export class GameScene extends Phaser.Scene {
 
   gameOver(){
     console.log("GAME OVER")
+
+    let backgroundGameOverWidth = 300,
+    backgroundGameOverHeight = 400,
+    backgroundGamoOverX =  (game.canvas.width / 2) - backgroundGameOverWidth/2,
+    backgroundGamoOverY = (game.canvas.height / 2) - backgroundGameOverHeight/2
+
+    this.add.rectangle(backgroundGamoOverX, backgroundGamoOverY, backgroundGameOverWidth, backgroundGameOverHeight, 0x000000 ).setDepth(1).setOrigin(0,0)
+
+    this.add.text( backgroundGamoOverX, backgroundGamoOverY, "Game Over", {
+      fontSize: "30px",
+      fill: "#FFFFFF",
+    }).setDepth(1.1)
   }
 
   startOver(){
@@ -197,6 +216,7 @@ export class GameScene extends Phaser.Scene {
       if( this.lives == 0 ){
         this.gameOver()
       }
+      else this.startTimer()
   }
 
 }
