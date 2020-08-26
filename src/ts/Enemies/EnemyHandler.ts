@@ -71,4 +71,8 @@ export class EnemyHandler {
         }, [], this);
 
     }
+
+    public clearBoard(){
+        
+    }
 }

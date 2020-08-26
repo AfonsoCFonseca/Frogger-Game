@@ -12,17 +12,16 @@ export let enemyHandler: EnemyHandler
 
 export class GameScene extends Phaser.Scene {
 
-  private cursors
   private player: Frog
   private frogInitialPosition: Position
-  private level: number
+  private level = 1
   private enemyGroup
   private timePerLevel:number
+  private score: number
 
   private lives: number;
   private lifeImages = []
-
-  private timerRect;
+  private menuGameOver: Phaser.GameObjects.Group;
   
   private moveKeys;
   private keyRdy = true
@@ -34,6 +33,8 @@ export class GameScene extends Phaser.Scene {
   preload() {
     this.load.image('background', 'assets/background.png');
     this.load.image('froggertitle', 'assets/froggerTitle.png');
+    this.load.image('GameOverScreen', 'assets/gameOverScreen.png');
+    this.load.image('RetryButton', 'assets/RetryButton.png');
     this.load.image('life', 'assets/life.png');
     this.load.spritesheet("frog", "assets/frog.png", {
       frameWidth: 60,
@@ -53,8 +54,9 @@ export class GameScene extends Phaser.Scene {
     consts.CANVAS.WIDTH = game.canvas.width
     consts.CANVAS.HEIGHT = game.canvas.height
 
+    this.menuGameOver = this.add.group()
+
     this.frogInitialPosition = Utils.convertTileToPosition({tileX: 7, tileY: 12})
-    this.level = 1
     scene = this
 
     this.enemyGroup = this.add.group();
@@ -71,11 +73,7 @@ export class GameScene extends Phaser.Scene {
     let timeText = this.add.text( game.canvas.width / 2 + 240, heightTimeText, "TIME" )
     timeText.setFontSize(35);
 
-    this.timePerLevel = consts.TIME_PER_LEVEL
-
-    this.createLives()
-    this.startTimer()
-
+    this.startGame()
 
     map = new Map()
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
@@ -83,14 +81,12 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.enemyGroup, this.kill );
 
     this.setKeys()
-    enemyHandler = new EnemyHandler( )
 
   }
 
   update() {
 
     this.keys();
-    this.updateTimer()
     this.events.emit( "updateEnemy" );
 
   }
@@ -100,6 +96,21 @@ export class GameScene extends Phaser.Scene {
     this.player.death( () => {
       scene.decrementLives()
     })
+
+  }
+
+  startGame(){
+
+    this.timePerLevel = consts.TIME_PER_LEVEL
+    this.score = 0
+    this.level = 1
+
+    this.createLives()
+    this.startTimer()
+    this.menuGameOver.clear(true);
+
+    if( enemyHandler ) 
+    enemyHandler = new EnemyHandler( )
 
   }
 
@@ -126,35 +137,45 @@ export class GameScene extends Phaser.Scene {
 
   }
 
-  updateTimer(){
-
-    //this.timerRect.scaleX = 3
-
-  }
-
   gameOver(){
     console.log("GAME OVER")
 
-    let backgroundGameOverWidth = 300,
+    let self = this,
+    backgroundGameOverWidth = 300,
     backgroundGameOverHeight = 400,
     backgroundGamoOverX =  (game.canvas.width / 2) - backgroundGameOverWidth/2,
-    backgroundGamoOverY = (game.canvas.height / 2) - backgroundGameOverHeight/2
+    backgroundGamoOverY = (game.canvas.height / 2) - backgroundGameOverHeight/2,
+    buttonWidth = 225
 
-    this.add.rectangle(backgroundGamoOverX, backgroundGamoOverY, backgroundGameOverWidth, backgroundGameOverHeight, 0x000000 ).setDepth(1).setOrigin(0,0)
+    let gameOverScreen = this.add.image(backgroundGamoOverX, backgroundGamoOverY, "GameOverScreen" ).setDepth(1).setOrigin(0,0)
 
-    this.add.text( backgroundGamoOverX, backgroundGamoOverY, "Game Over", {
+    let scoretext = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 135, `${this.score}`, {
       fontSize: "30px",
       fill: "#FFFFFF",
     }).setDepth(1.1)
-  }
 
-  startOver(){
+    let highScoretext = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 190, `${this.score}`, {
+      fontSize: "30px",
+      fill: "#FFFFFF",
+    }).setDepth(1.1)
+
+    let calcX = (backgroundGameOverWidth - buttonWidth) / 2
+    let btnRetry = this.add.image( backgroundGamoOverX + calcX, backgroundGamoOverY + 270, "RetryButton" ).setOrigin(0,0).setDepth(1.1)
+    btnRetry.setInteractive( { useHandCursor: true  } );
+    btnRetry.setInteractive( { useHandCursor: true  } );
+    btnRetry.on('pointerdown', () =>{
+
+      self.startGame()
+
+    } )
+    
+    this.menuGameOver.addMultiple([gameOverScreen,highScoretext, scoretext, btnRetry])
 
   }
 
   setKeys(){
 
-    this.cursors = this.input.keyboard.createCursorKeys();
+    this.input.keyboard.createCursorKeys();
 
     this.moveKeys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
