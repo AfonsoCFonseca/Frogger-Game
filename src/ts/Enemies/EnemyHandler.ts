@@ -10,12 +10,13 @@ export class EnemyHandler {
     
     private carArray: Car[] = []
     private MAX_ROWS = 5
+    private intervalCreator
 
     constructor( ){
         this.generateStartingEnemies()
         this.enemyCreator()
         
-        setInterval( () => this.enemyCreator() , 3000);
+        this.intervalCreator = setInterval( () => this.enemyCreator() , 3000);
 
         this.enemyCreator = this.enemyCreator.bind( this )
     }
@@ -50,13 +51,15 @@ export class EnemyHandler {
 
     }
     
-    public deleteEnemy( type: enemyType, _id: string, posTile: TilePosition ){
+    public deleteEnemy( type: enemyType, _id: string ){
 
         if( type == enemyType.CAR ){
+
             this.carArray.forEach( ( car, i ) => {
+
                 if( car.ID == _id ){
                     this.carArray[i].destroy()
-                    this.carArray.splice(i, 1);
+                    this.carArray.slice(i, 1);
                 }
             })
         }
@@ -72,7 +75,14 @@ export class EnemyHandler {
 
     }
 
-    public clearBoard(){
-        
+    public reset(){
+        this.clearBoard()
+        clearInterval( this.intervalCreator );
+    }
+
+    private clearBoard(){
+
+        this.carArray.forEach( (car,i) =>  car.delete() )
+
     }
 }

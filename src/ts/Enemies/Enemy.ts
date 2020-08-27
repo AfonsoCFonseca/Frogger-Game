@@ -39,10 +39,14 @@ export abstract class Enemy extends Phaser.GameObjects.Sprite{
         if( this.isLimitBoundaries() )
             this.move()
         else{
-            scene.events.off( 'updateEnemy', this.update )
-            enemyHandler.deleteEnemy( enemyType.CAR, this.ID, this.currentTilePosition )
+            this.delete()
         }
 
+    }
+
+    public delete(){
+        scene.events.off( 'updateEnemy', this.update )
+        enemyHandler.deleteEnemy( enemyType.CAR, this.ID )
     }
 
     isLimitBoundaries(): boolean{

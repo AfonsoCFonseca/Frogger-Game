@@ -17,7 +17,7 @@ export class GameScene extends Phaser.Scene {
   private level = 1
   private enemyGroup
   private timePerLevel:number
-  private score: number
+  private score: number = 0
 
   private lives: number;
   private lifeImages = []
@@ -66,12 +66,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 2  - ( consts.BACKGROUND.HEIGHT / 2), 'background').setOrigin(0, 0);
-    this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 10, 'froggertitle').setOrigin(0, 0);
 
-    let heightTimeText = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + 12
-    let timeText = this.add.text( game.canvas.width / 2 + 240, heightTimeText, "TIME" )
-    timeText.setFontSize(35);
+    this.createMapAndGUI()
 
     this.startGame()
 
@@ -109,7 +105,7 @@ export class GameScene extends Phaser.Scene {
     this.startTimer()
     this.menuGameOver.clear(true);
 
-    if( enemyHandler ) 
+    if( enemyHandler ) enemyHandler.reset() 
     enemyHandler = new EnemyHandler( )
 
   }
@@ -163,11 +159,7 @@ export class GameScene extends Phaser.Scene {
     let btnRetry = this.add.image( backgroundGamoOverX + calcX, backgroundGamoOverY + 270, "RetryButton" ).setOrigin(0,0).setDepth(1.1)
     btnRetry.setInteractive( { useHandCursor: true  } );
     btnRetry.setInteractive( { useHandCursor: true  } );
-    btnRetry.on('pointerdown', () =>{
-
-      self.startGame()
-
-    } )
+    btnRetry.on('pointerdown', () => self.startGame() )
     
     this.menuGameOver.addMultiple([gameOverScreen,highScoretext, scoretext, btnRetry])
 
@@ -238,6 +230,31 @@ export class GameScene extends Phaser.Scene {
         this.gameOver()
       }
       else this.startTimer()
+  }
+
+  private createMapAndGUI(){
+    this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 2  - ( consts.BACKGROUND.HEIGHT / 2), 'background').setOrigin(0, 0);
+    this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 20, 'froggertitle').setOrigin(0, 0);
+
+    let heightTimeText = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + 12
+    this.add.text( game.canvas.width / 2 + 240, heightTimeText, "TIME" , {fontSize: "35px",fill: "#FFFFFF", fontFamily: 'font1' })
+
+    let rectWith = 200
+    let leftRectX = ( game.canvas.width / 2 - consts.BACKGROUND.WIDTH / 2) - rectWith,
+    leftRectY = 100
+    this.add.rectangle( leftRectX, leftRectY + 75, rectWith, consts.BACKGROUND.HEIGHT, 0x000000 ).setOrigin(0,0).setDepth(1)
+
+    let rightRectX= ( game.canvas.width / 2 + consts.BACKGROUND.WIDTH / 2),
+    rightRectY = 100
+    this.add.rectangle( rightRectX, rightRectY + 75, rectWith, consts.BACKGROUND.HEIGHT, 0x000000 ).setOrigin(0,0).setDepth(1)
+
+    let scoreTextX = ( game.canvas.width / 2 - consts.BACKGROUND.WIDTH / 2) + 10,
+    scoreTextY = ( game.canvas.height / 2 - consts.BACKGROUND.HEIGHT / 2) - 40
+    let scoreText = this.add.text( scoreTextX, scoreTextY, "SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
+    scoreText.setText(`SCORE: ${this.score}`);
+
+    let highScoreText = this.add.text( scoreTextX + 400, scoreTextY, "HIGH SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
+    highScoreText.setText(`HIGH SCORE: ${this.score}`);
   }
 
 }
