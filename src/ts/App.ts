@@ -35,6 +35,9 @@ export class GameScene extends Phaser.Scene {
     this.load.image('froggertitle', 'assets/froggerTitle.png');
     this.load.image('GameOverScreen', 'assets/gameOverScreen.png');
     this.load.image('RetryButton', 'assets/RetryButton.png');
+    this.load.image('log1', 'assets/log1.png');
+    this.load.image('log2', 'assets/log2.png');
+    this.load.image('log3', 'assets/log3.png');
     this.load.image('life', 'assets/life.png');
     this.load.spritesheet("frog", "assets/frog.png", {
       frameWidth: 60,
@@ -126,8 +129,7 @@ export class GameScene extends Phaser.Scene {
       width: widthBar,
       repeat: 0,
       ease: 'Linear',
-      //duration: this.timePerLevel,
-      duration: 1000,
+      duration: this.timePerLevel,
       onComplete: () => self.kill()
     });
 

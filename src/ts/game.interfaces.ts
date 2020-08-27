@@ -28,6 +28,6 @@ export interface GameSprite {
     scene: Phaser.Scene,
     x: number,
     y: number,
-    frame: number,
+    frame?: number,
     texture: string,
 }

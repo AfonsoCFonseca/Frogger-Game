@@ -1,5 +1,6 @@
 import { Enemy } from './Enemy'
 import { Car } from './Car'
+import { Platform } from './Platform'
 import { enemyType, row, TilePosition, directionEnum } from '../game.interfaces'
 import * as consts from "../Utils/consts"
 import { Utils } from '../Utils/utils'
@@ -9,6 +10,7 @@ import { scene } from '../App'
 export class EnemyHandler {
     
     private carArray: Car[] = []
+    private platformArray: Platform[] = []
     private MAX_ROWS = 5
     private intervalCreator
 
@@ -24,8 +26,12 @@ export class EnemyHandler {
     generateStartingEnemies(){
         for( var i = 0; i < this.MAX_ROWS; i++ ){
             let tileX = Utils.rndNumber( 0, consts.BACKGROUND.X_TILE_SIZE )
-            let tilePosition = { tileX, tileY: i + 7 }
-            this.createEnemy( enemyType.CAR, tilePosition )
+            let tileCarPosition = { tileX, tileY: i + 7 }
+            this.createEnemy( enemyType.CAR, tileCarPosition )
+            if( i == 0 || i == 2 || i == 3 ){
+                let tilePlatformPosition = { tileX, tileY: i + 1 }
+                this.createEnemy( enemyType.PLATFORM, tilePlatformPosition )
+            }
         }
 
     }
@@ -39,14 +45,20 @@ export class EnemyHandler {
         }
     }
 
-    createEnemy( type: enemyType, posTile: TilePosition): Car{
+    createEnemy( type: enemyType, posTile: TilePosition): Enemy {
 
-        let direction = posTile.tileY % 2 == 0 ? directionEnum.EAST : directionEnum.WEST
+        let direction: directionEnum
         switch( type ){
             case enemyType.CAR:
-                let car = new Car( type, posTile, direction )
+                direction = posTile.tileY % 2 == 0 ? directionEnum.EAST : directionEnum.WEST
+                let car = new Car( posTile, direction )
                 this.carArray.push(car)
                 return car
+            case enemyType.PLATFORM: 
+                direction = directionEnum.EAST
+                let platform = new Platform( posTile, direction )
+                this.platformArray.push( platform)
+                return platform
         }
 
     }

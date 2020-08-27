@@ -9,7 +9,7 @@ export class Car extends Enemy{
     private row: number
     private speedMap: number[]
     
-    constructor( type: enemyType, posTile: TilePosition, direction: directionEnum ){
+    constructor( posTile: TilePosition, direction: directionEnum ){
         let pos = Utils.convertTileToPosition( posTile )
         let { texture, frame } = getCarFrameAndTexture( posTile.tileY )
         let gameObj = {
@@ -19,7 +19,7 @@ export class Car extends Enemy{
             texture,
             frame
         }
-        super( type, gameObj, direction )
+        super( enemyType.CAR, gameObj, direction )
 
         this.speedMap = [ 2.8, 2.7, 2.4, 2.5, 2.3 ]
         this.row = posTile.tileY - 6
