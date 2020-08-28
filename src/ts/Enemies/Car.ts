@@ -5,7 +5,6 @@ import { Utils } from '../Utils/utils';
 import * as consts from "../Utils/consts"
 
 export class Car extends Enemy{
-
     private row: number
     private speedMap: number[]
     
@@ -35,6 +34,13 @@ export class Car extends Enemy{
                 return this.speedMap[this.row - 1]
         }
     }
+
+    public carBoundary( direction: directionEnum,currentTilePosition: TilePosition ):boolean{
+        if( ( direction == directionEnum.EAST && currentTilePosition.tileX >= consts.BACKGROUND.X_TILE_SIZE ) || 
+            ( direction == directionEnum.WEST && currentTilePosition.tileX < -1 ) ) return false
+        else return true
+    }
+
 }
 
 function getCarFrameAndTexture( tileY: number ) :
@@ -46,3 +52,4 @@ function getCarFrameAndTexture( tileY: number ) :
             frame: isFirstRow ? null : tileY - 7,
         }
 }
+

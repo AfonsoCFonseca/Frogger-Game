@@ -3,6 +3,11 @@ import { TilePosition, Position } from "../game.interfaces";
 
 export class Utils {
 
+    public static halfScreen = ( axis: 'x' | 'y', edge: boolean | null = null ): number => { 
+        if( axis == 'x' ) return !edge ? (consts.CANVAS.WIDTH / 2) - (consts.BACKGROUND.WIDTH / 2) : (consts.CANVAS.WIDTH / 2) + (consts.BACKGROUND.WIDTH / 2)
+        else return !edge ? (consts.CANVAS.HEIGHT / 2) - (consts.BACKGROUND.HEIGHT / 2) : (consts.CANVAS.HEIGHT / 2) + (consts.BACKGROUND.HEIGHT / 2)
+    }
+
     public static convertTileToPosition( pos: TilePosition ):Position{
 
         let newPos = {
@@ -10,8 +15,8 @@ export class Utils {
             y: (pos.tileY * consts.TILE_SIZE),
         }
 
-        newPos.x += (consts.CANVAS.WIDTH / 2) - (consts.BACKGROUND.WIDTH / 2)
-        newPos.y += (consts.CANVAS.HEIGHT / 2) - (consts.BACKGROUND.HEIGHT / 2)
+        newPos.x += this.halfScreen('x')
+        newPos.y += this.halfScreen('y')
         
         return {
             x: newPos.x,
@@ -20,8 +25,8 @@ export class Utils {
     }
 
     public static convertPositionToTile( pos: Position ): TilePosition{
-        let currentXPosition =  pos.x - ((consts.CANVAS.WIDTH / 2) - (consts.BACKGROUND.WIDTH / 2))
-        let currentYPosition =  pos.y - ((consts.CANVAS.HEIGHT / 2) - (consts.BACKGROUND.HEIGHT / 2))
+        let currentXPosition =  pos.x - ( this.halfScreen('x') )
+        let currentYPosition =  pos.y - ( this.halfScreen('y') )
 
         return {
             tileX: Math.floor( currentXPosition / consts.TILE_SIZE ),  
@@ -36,4 +41,6 @@ export class Utils {
     public static rndNumber(min: number, max: number): number {
         return Math.random() * (max - min) + min;
     }
+
+
 }

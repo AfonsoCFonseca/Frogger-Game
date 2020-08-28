@@ -65,16 +65,26 @@ export class EnemyHandler {
     
     public deleteEnemy( type: enemyType, _id: string ){
 
-        if( type == enemyType.CAR ){
-
-            this.carArray.forEach( ( car, i ) => {
-
-                if( car.ID == _id ){
-                    this.carArray[i].destroy()
-                    this.carArray.slice(i, 1);
-                }
-            })
+        let currentArray;
+        
+        switch( type ){
+            case enemyType.CAR: 
+                currentArray = this.carArray
+                break;
+            case enemyType.PLATFORM:
+                currentArray = this.platformArray
+                break;
+            default:
+                console.log( "no type selected")
         }
+
+        currentArray.forEach( ( enemy, i ) => {
+
+            if( enemy.ID == _id ){
+                currentArray[i].destroy()
+                currentArray.slice(i, 1);
+            }
+        })
         
     }
 

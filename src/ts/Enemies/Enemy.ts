@@ -1,7 +1,9 @@
 import { enemyType, TilePosition, directionEnum, GameSprite } from '../game.interfaces'
 import { Utils } from '../Utils/utils'
 import * as consts from "../Utils/consts"
+import { Car } from './Car'
 import { scene, enemyHandler } from '../App'
+
 
 export abstract class Enemy extends Phaser.GameObjects.Sprite{
 
@@ -26,6 +28,7 @@ export abstract class Enemy extends Phaser.GameObjects.Sprite{
 
         scene.enemyGroup.add(this);
         scene.events.on('updateEnemy', this.update );
+
     }
 
     public setSpeed( newSpeed: number ){
@@ -46,19 +49,26 @@ export abstract class Enemy extends Phaser.GameObjects.Sprite{
 
     public delete(){
         scene.events.off( 'updateEnemy', this.update )
-        enemyHandler.deleteEnemy( enemyType.CAR, this.ID )
+        enemyHandler.deleteEnemy( this.enemyType, this.ID )
     }
 
-    isLimitBoundaries(): boolean{
-        if( ( this.direction == directionEnum.EAST && this.currentTilePosition.tileX >= consts.BACKGROUND.X_TILE_SIZE ) || 
-            ( this.direction == directionEnum.WEST && this.currentTilePosition.tileX < -1 ) )
-            return false
-        else return true
+    private isLimitBoundaries(): boolean{
+
+        switch( this.enemyType ){
+            case enemyType.CAR: 
+                return Car.prototype.carBoundary.call( this, this.direction, this.currentTilePosition  )
+            case enemyType.PLATFORM: 
+                return Platform.prototype.platformBoundary.call( this, this.x, this.width )
+            default:
+                return true
+        }
     }
 
-    move(){
+    private move(){
         this.x += this.direction == directionEnum.EAST ? this.speed : -this.speed
     }
     
 
 }
+
+import { Platform } from './Platform'

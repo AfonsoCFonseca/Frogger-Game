@@ -4,10 +4,9 @@ import { scene } from '../App';
 import { Utils } from '../Utils/utils';
 import * as consts from "../Utils/consts"
 
-
 export class Platform extends Enemy {
-    speedMap: number[] 
-    row: number
+    private speedMap: number[] 
+    private row: number
 
     constructor( posTile: TilePosition, direction: directionEnum ){
         let pos = Utils.convertTileToPosition( posTile )
@@ -35,7 +34,14 @@ export class Platform extends Enemy {
                 return this.speedMap[this.row - 1]
         }
     }
+
+    public platformBoundary( x: number, width: number ): boolean {
+        if( x >= Utils.halfScreen( 'x', true ) + width / 2 ) return false
+        else return true
+    }
+
 }
+
 
 function getPlatformTexture( pos:number ):string{
     switch(pos){

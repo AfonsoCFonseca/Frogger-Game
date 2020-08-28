@@ -215,7 +215,7 @@ export class GameScene extends Phaser.Scene {
     this.lives = 3
     let LIFE_TILE_SIZE = 30
     let y = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + LIFE_TILE_SIZE
-    let xGap = ( game.canvas.width / 2 ) - (consts.BACKGROUND.WIDTH / 2)
+    let xGap = Utils.halfScreen('x')
     for( var i = 0; i < this.lives; i++ ){
       let multip = i * LIFE_TILE_SIZE
       this.lifeImages.push( this.add.image( xGap + multip, y, 'life') )
@@ -235,23 +235,22 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createMapAndGUI(){
-    this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 2  - ( consts.BACKGROUND.HEIGHT / 2), 'background').setOrigin(0, 0);
-    this.add.image(game.canvas.width / 2 - ( consts.BACKGROUND.WIDTH / 2), game.canvas.height / 20, 'froggertitle').setOrigin(0, 0);
+    this.add.image( Utils.halfScreen('x') , Utils.halfScreen('y'), 'background').setOrigin(0, 0);
+    this.add.image( Utils.halfScreen('x') , game.canvas.height / 20, 'froggertitle').setOrigin(0, 0);
 
+    let halfScreenX = Utils.halfScreen('x')
     let heightTimeText = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + 12
     this.add.text( game.canvas.width / 2 + 240, heightTimeText, "TIME" , {fontSize: "35px",fill: "#FFFFFF", fontFamily: 'font1' })
 
-    let rectWith = 200
-    let leftRectX = ( game.canvas.width / 2 - consts.BACKGROUND.WIDTH / 2) - rectWith,
-    leftRectY = 100
-    this.add.rectangle( leftRectX, leftRectY + 75, rectWith, consts.BACKGROUND.HEIGHT, 0x000000 ).setOrigin(0,0).setDepth(1)
+    let rectWith = 400
+    let leftRectX = Utils.halfScreen('x') - rectWith
+    this.add.rectangle( leftRectX, Utils.halfScreen('y') , rectWith, consts.BACKGROUND.HEIGHT, 0x000000 ).setOrigin(0,0).setDepth(1)
 
-    let rightRectX= ( game.canvas.width / 2 + consts.BACKGROUND.WIDTH / 2),
-    rightRectY = 100
-    this.add.rectangle( rightRectX, rightRectY + 75, rectWith, consts.BACKGROUND.HEIGHT, 0x000000 ).setOrigin(0,0).setDepth(1)
+    let rightRectX= ( game.canvas.width / 2 + consts.BACKGROUND.WIDTH / 2)
+    this.add.rectangle( rightRectX, Utils.halfScreen('y'), rectWith, consts.BACKGROUND.HEIGHT, 0x000000 ).setOrigin(0,0).setDepth(1)
 
-    let scoreTextX = ( game.canvas.width / 2 - consts.BACKGROUND.WIDTH / 2) + 10,
-    scoreTextY = ( game.canvas.height / 2 - consts.BACKGROUND.HEIGHT / 2) - 40
+    let scoreTextX = Utils.halfScreen('x') + 10,
+    scoreTextY = Utils.halfScreen('y') - 40
     let scoreText = this.add.text( scoreTextX, scoreTextY, "SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
     scoreText.setText(`SCORE: ${this.score}`);
 
