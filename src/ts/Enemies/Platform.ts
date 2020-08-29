@@ -20,7 +20,7 @@ export class Platform extends Enemy {
         }
         super( enemyType.PLATFORM, gameObj, direction )
 
-        this.speedMap = [ 2.8, 2.7, 2.4, 2.5, 2.3 ]
+        this.speedMap = [ 1.8, 0.0, 2.0, 1.5 ]
         this.row = posTile.tileY
 
         let speed = this.getSpeed()
@@ -28,7 +28,7 @@ export class Platform extends Enemy {
 
     }
 
-    private getSpeed(): number{
+    public getSpeed(): number{
         switch( scene.level ){
             case 1: 
                 return this.speedMap[this.row - 1]

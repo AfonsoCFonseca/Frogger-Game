@@ -18,6 +18,7 @@ export class Car extends Enemy{
             texture,
             frame
         }
+
         super( enemyType.CAR, gameObj, direction )
 
         this.speedMap = [ 2.8, 2.7, 2.4, 2.5, 2.3 ]

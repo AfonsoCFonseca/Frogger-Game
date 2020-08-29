@@ -15,7 +15,7 @@ export class GameScene extends Phaser.Scene {
   private player: Frog
   private frogInitialPosition: Position
   private level = 1
-  private enemyGroup
+  private enemiesGroup
   private timePerLevel:number
   private score: number = 0
 
@@ -62,10 +62,13 @@ export class GameScene extends Phaser.Scene {
     this.frogInitialPosition = Utils.convertTileToPosition({tileX: 7, tileY: 12})
     scene = this
 
-    this.enemyGroup = this.add.group();
-    this.enemyGroup.enableBody = true;
+    this.enemiesGroup = this.add.group();
+    this.enemiesGroup.enableBody = true;
 
     this.kill = this.kill.bind( this )
+    this.float = this.float.bind( this )
+    this.collision = this.collision.bind( this )
+
   }
 
   create() {
@@ -77,7 +80,7 @@ export class GameScene extends Phaser.Scene {
     map = new Map()
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
-    this.physics.add.overlap(this.player, this.enemyGroup, this.kill );
+    this.physics.add.overlap( this.enemiesGroup, this.player, this.collision );
 
     this.setKeys()
 
@@ -90,12 +93,28 @@ export class GameScene extends Phaser.Scene {
 
   }
 
-  kill(){
+  collision( enemy ){
 
+    switch( enemy.enemyType ){
+      case enemyType.CAR:
+        this.kill()
+        break;
+      case enemyType.PLATFORM:
+        this.float( enemy )
+        break;
+    }
+
+  }
+
+  kill(){
     this.player.death( () => {
       scene.decrementLives()
     })
 
+  }
+
+  float( platform ){
+      this.player.x += platform.getSpeed()
   }
 
   startGame(){

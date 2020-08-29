@@ -7,7 +7,7 @@ import { scene, enemyHandler } from '../App'
 
 export abstract class Enemy extends Phaser.GameObjects.Sprite{
 
-    private enemyType: enemyType
+    public enemyType: enemyType
     private currentTilePosition: TilePosition
     public ID: string
     private direction: directionEnum
@@ -25,8 +25,8 @@ export abstract class Enemy extends Phaser.GameObjects.Sprite{
         this.ID = Utils.generateId()
         
         this.update = this.update.bind( this )
+        scene.enemiesGroup.add( this )
 
-        scene.enemyGroup.add(this);
         scene.events.on('updateEnemy', this.update );
 
     }
@@ -48,8 +48,11 @@ export abstract class Enemy extends Phaser.GameObjects.Sprite{
     }
 
     public delete(){
-        scene.events.off( 'updateEnemy', this.update )
+        
         enemyHandler.deleteEnemy( this.enemyType, this.ID )
+        scene.events.off( 'updateEnemy', this.update )
+        this.destroy()
+
     }
 
     private isLimitBoundaries(): boolean{

@@ -16,8 +16,8 @@ export class EnemyHandler {
 
     constructor( ){
         this.generateStartingEnemies()
+
         this.enemyCreator()
-        
         this.intervalCreator = setInterval( () => this.enemyCreator() , 3000);
 
         this.enemyCreator = this.enemyCreator.bind( this )
@@ -37,11 +37,15 @@ export class EnemyHandler {
     }
 
     enemyCreator(){
-        let self = this
+
         for( var i = 0; i < this.MAX_ROWS; i++ ){
             let tileX = Utils.rndNumber( 0, consts.BACKGROUND.X_TILE_SIZE )
-            let tilePosition = { tileX, tileY: i + 7 }
-            this.requestAnotherCar( enemyType.CAR, tilePosition )
+            let tileCarPosition = { tileX, tileY: i + 7 }
+            this.requestAnotherEnemy( enemyType.CAR, tileCarPosition )
+            if( i == 0 || i == 2 || i == 3 ){
+                let tilePlatformPosition = { tileX, tileY: i + 1 }
+                this.requestAnotherEnemy( enemyType.PLATFORM, tilePlatformPosition )
+            }
         }
     }
 
@@ -57,7 +61,7 @@ export class EnemyHandler {
             case enemyType.PLATFORM: 
                 direction = directionEnum.EAST
                 let platform = new Platform( posTile, direction )
-                this.platformArray.push( platform)
+                this.platformArray.push( platform )
                 return platform
         }
 
@@ -81,17 +85,19 @@ export class EnemyHandler {
         currentArray.forEach( ( enemy, i ) => {
 
             if( enemy.ID == _id ){
-                currentArray[i].destroy()
                 currentArray.slice(i, 1);
             }
+
         })
         
     }
 
-    private requestAnotherCar( type: enemyType, posTile: TilePosition ): void{
+    private requestAnotherEnemy( type: enemyType, posTile: TilePosition ): void {
         let timer = Utils.rndNumber( consts.CAR.MIN_INTERVAL_CAR, consts.CAR.MAX_INTERVAL_CAR )
+        if( type == enemyType.CAR ) posTile.tileX = posTile.tileY % 2 == 0 ? 0 : consts.BACKGROUND.X_TILE_SIZE
+        if( type == enemyType.PLATFORM ) posTile.tileX = -2
+        
         scene.time.delayedCall( timer, () => {
-            posTile.tileX = posTile.tileY % 2 == 0 ? 0 : consts.BACKGROUND.X_TILE_SIZE
             return this.createEnemy( type, posTile )
         }, [], this);
 

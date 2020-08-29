@@ -16,7 +16,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
     constructor(config) {
         super( scene, config.x, config.y, "frog");
         scene.physics.world.enable(this);
-        scene.add.existing(this).setOrigin( 0,0 )
+        scene.add.existing(this).setDepth(1).setOrigin( 0,0 )
 
         this.currentDirection = directionEnum.NORTH
         this.death = this.death.bind(this)
