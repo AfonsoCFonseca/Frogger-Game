@@ -33,14 +33,14 @@ When the game starts over, the enemy handler is responsible for clearing every e
 # Development
 Started by developing the Map, Player and Tile class and created a relation between them, where the map contains the structure of Tiles where the Frog ( Player ) will be able to move around or predict enemies, platforms or walls.
 
-** Enemies & generation ** 
+**Enemies & generation** 
 After, I started to create the Enemy, Car and EnemyHandler class. I began by setting the Car on the map, by creating it via EnemyHandler, giving him movement and reacting to the boundaries of the map.
 With that done, I focused on drawing the different cars in the different tracks, as well as giving them different speeds depending on their position
 
-** Deaths, GameOver & UI ** 
+**Deaths, GameOver & UI** 
 I started to focus on completing the game loop, since the starting point to the end of the game...So setting variables of lives or timers. resetting the game when the frog loses one life or lose the game and making the GameOver screen. To give some context I started drawing the UI, like icons and time bars, to better understand what's happening.
 
-** Platforms, Body Detection ** 
+**Platforms, Body Detection** 
 Made the platforms working with the frog interactions, then made the frog detect if it's located on the riverside of the map and detecting if it's touching a platform. If not, then calls the kill method.
 Changed the frog movement from a grid-based move to an increment/decrement values on both axis, fixing the frog weird movement when above the Platforms or Toads.
 
