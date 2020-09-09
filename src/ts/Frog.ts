@@ -11,12 +11,20 @@ export class Frog extends Phaser.GameObjects.Sprite {
     private currentDirection: directionEnum
     private currentAnimationFrame: number
     private isDying = false
-    private animDeath
+    public isPlatform = false
+
+    body!: Phaser.Physics.Arcade.Body
 
     constructor(config) {
         super( scene, config.x, config.y, "frog");
+        
+        scene.physics.add.existing(this);
         scene.physics.world.enable(this);
         scene.add.existing(this).setDepth(1).setOrigin( 0,0 )
+
+        scene.physics.world.enable(this);
+        scene.add.existing(this);
+        this.body.setSize(40,40,true)
 
         this.currentDirection = directionEnum.NORTH
         this.death = this.death.bind(this)
@@ -49,10 +57,30 @@ export class Frog extends Phaser.GameObjects.Sprite {
         return map.getTile( tilePosition )
     }
 
+    private isRiver(){
+        return ( this.y >= consts.BACKGROUND.RIVER_TOP_HEIGHT && this.y <= consts.BACKGROUND.RIVER_BOTTOM_HEIGHT )
+    }
+
     private setDirection(dir: directionEnum){
         this.currentDirection = dir
     }
     
+    public update(){
+
+        this.boundaries() 
+        this.isPlatform = false
+
+    }
+
+    private boundaries(){
+        if( this.x <= 0 || this.x > Utils.halfScreen( 'x', true ) )
+            scene.kill()
+
+        if( this.isRiver() && !this.isPlatform ){
+            scene.kill()
+        }
+    }
+
     public move( direction: directionEnum ){
         
         if( !this.isDying ){
@@ -64,22 +92,22 @@ export class Frog extends Phaser.GameObjects.Sprite {
                 case directionEnum.EAST:
                     tilePosition.tileX++
                     this.currentAnimationFrame = 7
-                    this.x = Utils.convertTileToPosition( tilePosition ).x
+                    this.x += consts.TILE_SIZE
                 break;
                 case directionEnum.WEST:
                     tilePosition.tileX--
                     this.currentAnimationFrame = 5
-                    this.x = Utils.convertTileToPosition( tilePosition ).x
+                    this.x -= consts.TILE_SIZE
                 break;
                 case directionEnum.SOUTH:
                     tilePosition.tileY++
                     this.currentAnimationFrame = 3
-                    this.y = Utils.convertTileToPosition( tilePosition ).y
+                    this.y += consts.TILE_SIZE
                     break;
                 case directionEnum.NORTH:
                     tilePosition.tileY--
                     this.currentAnimationFrame = 1
-                    this.y = Utils.convertTileToPosition( tilePosition ).y
+                    this.y -= consts.TILE_SIZE
                 break;
             }
     

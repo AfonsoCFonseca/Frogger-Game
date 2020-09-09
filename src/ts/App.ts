@@ -80,7 +80,7 @@ export class GameScene extends Phaser.Scene {
     map = new Map()
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
-    this.physics.add.overlap( this.enemiesGroup, this.player, this.collision );
+    this.physics.add.collider( this.enemiesGroup, this.player, this.collision );
 
     this.setKeys()
 
@@ -90,6 +90,7 @@ export class GameScene extends Phaser.Scene {
 
     this.keys();
     this.events.emit( "updateEnemy" );
+    this.player.update()
 
   }
 
@@ -100,13 +101,15 @@ export class GameScene extends Phaser.Scene {
         this.kill()
         break;
       case enemyType.PLATFORM:
+        this.player.isPlatform = true
         this.float( enemy )
         break;
     }
 
   }
 
-  kill(){
+  public kill(){
+
     this.player.death( () => {
       scene.decrementLives()
     })
@@ -114,7 +117,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   float( platform ){
-      this.player.x += platform.getSpeed()
+    this.player.x += platform.getSpeed()
   }
 
   startGame(){
@@ -125,7 +128,7 @@ export class GameScene extends Phaser.Scene {
 
     this.createLives()
     this.startTimer()
-    this.menuGameOver.clear(true);
+    this.menuGameOver.clear(true, true);
 
     if( enemyHandler ) enemyHandler.reset() 
     enemyHandler = new EnemyHandler( )
@@ -146,10 +149,12 @@ export class GameScene extends Phaser.Scene {
     this.tweens.add({
       targets: timerRect,
       width: widthBar,
-      repeat: 0,
+      repeat: -1,
       ease: 'Linear',
       duration: this.timePerLevel,
-      onComplete: () => self.kill()
+      onComplete: () => {
+        self.kill()
+      }
     });
 
   }
@@ -290,7 +295,7 @@ export var config = {
   physics: {
     default: "arcade",
     arcade: {
-      debug: false,
+      debug: true,
     },
   },
   scene: GameScene,

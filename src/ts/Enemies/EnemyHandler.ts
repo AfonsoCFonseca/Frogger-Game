@@ -110,7 +110,8 @@ export class EnemyHandler {
 
     private clearBoard(){
 
-        this.carArray.forEach( (car,i) =>  car.delete() )
+        this.platformArray.forEach( plat => plat.delete() )
+        this.carArray.forEach( car =>  car.delete() )
 
     }
 }

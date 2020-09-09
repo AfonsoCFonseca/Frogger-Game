@@ -20,7 +20,9 @@ export const BACKGROUND = {
     WIDTH: 840,
     HEIGHT: 780,
     X_TILE_SIZE: 14,
-    Y_TILE_SIZE: 13
+    Y_TILE_SIZE: 13,
+    RIVER_TOP_HEIGHT: 243,
+    RIVER_BOTTOM_HEIGHT: 484
 }
 
 export const FROG = {
