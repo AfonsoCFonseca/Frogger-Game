@@ -44,13 +44,11 @@ export class Car extends Enemy{
 
 }
 
-function getCarFrameAndTexture( tileY: number ) :
-    { texture: string, frame: number} {
-
+function getCarFrameAndTexture( tileY: number ) :{ texture: string, frame: number} {
         let isFirstRow =  tileY - 7 <= 0
         return {
             texture: isFirstRow ? "truck" : "cars",
-            frame: isFirstRow ? null : tileY - 7,
+            frame: isFirstRow ? null : tileY - 8,
         }
 }
 

@@ -77,8 +77,10 @@ export class Frog extends Phaser.GameObjects.Sprite {
             scene.kill()
 
         if( this.isRiver() && !this.isPlatform ){
-            scene.kill()
+            //scene.kill()
+            console.log("kill")
         }
+
     }
 
     public move( direction: directionEnum ){
@@ -120,6 +122,13 @@ export class Frog extends Phaser.GameObjects.Sprite {
 
     }
 
+    public resetToStartPosition(){
+        let { x, y } = Utils.convertTileToPosition( consts.FROG.INITIAL_TILE_POSITION )
+        this.setPosition( x, y )
+        this.setDirection( directionEnum.NORTH )
+        this.setTexture("frog", 0)
+    }
+
     public death( callback ) {
 
         if( !this.isDying ){
@@ -129,10 +138,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
 
             this.once('animationcomplete', () => {
 
-                let { x, y } = Utils.convertTileToPosition( consts.FROG.INITIAL_TILE_POSITION )
-                this.setPosition( x, y )
-                this.setDirection( directionEnum.NORTH )
-                this.setTexture("frog", 0)
+                this.resetToStartPosition()
                 callback()
                 this.isDying = false
     

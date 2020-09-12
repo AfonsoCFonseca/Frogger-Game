@@ -14,13 +14,16 @@ export class GameScene extends Phaser.Scene {
 
   private player: Frog
   private frogInitialPosition: Position
-  private level = 1
-  private enemiesGroup
+  private enemiesGroup: Phaser.GameObjects.Group;
+  private goalObjectGroup: Phaser.GameObjects.Group;
   private timePerLevel:number
-  private score: number = 0
 
+  private level = 1
+  private score: number = 0
   private lives: number;
   private lifeImages = []
+  public goalsScored = 0
+
   private menuGameOver: Phaser.GameObjects.Group;
   
   private moveKeys;
@@ -31,7 +34,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', 'assets/background.png');
+    this.load.image('background', 'assets/background.jpeg');
+    this.load.image('goal', 'assets/goal.png');
     this.load.image('froggertitle', 'assets/froggerTitle.png');
     this.load.image('GameOverScreen', 'assets/gameOverScreen.png');
     this.load.image('RetryButton', 'assets/RetryButton.png');
@@ -63,11 +67,12 @@ export class GameScene extends Phaser.Scene {
     scene = this
 
     this.enemiesGroup = this.add.group();
-    this.enemiesGroup.enableBody = true;
+    this.goalObjectGroup = this.add.group()
 
     this.kill = this.kill.bind( this )
     this.float = this.float.bind( this )
     this.collision = this.collision.bind( this )
+    this.reachGoal = this.reachGoal.bind( this )
 
   }
 
@@ -81,6 +86,7 @@ export class GameScene extends Phaser.Scene {
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
     this.physics.add.collider( this.enemiesGroup, this.player, this.collision );
+    this.physics.add.collider( this.goalObjectGroup, this.player, this.reachGoal );
 
     this.setKeys()
 
@@ -91,6 +97,9 @@ export class GameScene extends Phaser.Scene {
     this.keys();
     this.events.emit( "updateEnemy" );
     this.player.update()
+    if( this.goalsScored >= 5 ){
+      this.nextLevel()
+    }
 
   }
 
@@ -108,11 +117,27 @@ export class GameScene extends Phaser.Scene {
 
   }
 
-  public kill(){
+  reachGoal( goal ){
 
+      goal.reached()
+      this.player.resetToStartPosition()
+
+  }
+
+  public kill(){
+    console.log("kill")
     this.player.death( () => {
       scene.decrementLives()
     })
+
+  }
+
+  private nextLevel(){
+
+    this.goalsScored = 0;
+    this.level++
+    this.player.resetToStartPosition()
+    map.resetGoals()
 
   }
 
@@ -149,12 +174,10 @@ export class GameScene extends Phaser.Scene {
     this.tweens.add({
       targets: timerRect,
       width: widthBar,
-      repeat: -1,
+      repeat: 0,
       ease: 'Linear',
       duration: this.timePerLevel,
-      onComplete: () => {
-        self.kill()
-      }
+      onComplete: () => self.kill()
     });
 
   }

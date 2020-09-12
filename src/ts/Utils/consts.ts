@@ -4,6 +4,7 @@ export const TILE_SIZE = 60
 export const KEY_PRESSED_TIMER = 300
 export const DIFFICULTY_INCREMENT = 0.2
 export const TIME_PER_LEVEL = 25000
+export const GOAL_SIZE = 40
 
 export const CAR = {
     SPEED: 2,
@@ -18,7 +19,7 @@ export const CANVAS = {
 
 export const BACKGROUND = {
     WIDTH: 840,
-    HEIGHT: 780,
+    HEIGHT: 800,
     X_TILE_SIZE: 14,
     Y_TILE_SIZE: 13,
     RIVER_TOP_HEIGHT: 243,

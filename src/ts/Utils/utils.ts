@@ -16,7 +16,7 @@ export class Utils {
         }
 
         newPos.x += this.halfScreen('x')
-        newPos.y += this.halfScreen('y')
+        newPos.y += this.halfScreen('y' )
         
         return {
             x: newPos.x,
