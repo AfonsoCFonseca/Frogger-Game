@@ -17,6 +17,8 @@ export class GameScene extends Phaser.Scene {
   private enemiesGroup: Phaser.GameObjects.Group;
   private goalObjectGroup: Phaser.GameObjects.Group;
   private timePerLevel:number
+  private animationDie;
+  private spawnerId;
 
   private level = 1
   private score: number = 0
@@ -119,13 +121,15 @@ export class GameScene extends Phaser.Scene {
 
   reachGoal( goal ){
 
+      this.animationDie.stop();
+      this.startTimer()
       goal.reached()
       this.player.resetToStartPosition()
 
   }
 
   public kill(){
-    console.log("kill")
+    this.animationDie.stop();
     this.player.death( () => {
       scene.decrementLives()
     })
@@ -157,6 +161,7 @@ export class GameScene extends Phaser.Scene {
 
     if( enemyHandler ) enemyHandler.reset() 
     enemyHandler = new EnemyHandler( )
+    this.spawnerId = enemyHandler.id;
 
   }
 
@@ -170,8 +175,8 @@ export class GameScene extends Phaser.Scene {
 
     this.add.rectangle( x,y, widthBar,heightBar, 0x156550)
     let timerRect = this.add.rectangle( x - widthBar / 2,y, 0,heightBar, 0x000000)
-
-    this.tweens.add({
+    
+    this.animationDie = this.add.tween({
       targets: timerRect,
       width: widthBar,
       repeat: 0,
@@ -179,6 +184,7 @@ export class GameScene extends Phaser.Scene {
       duration: this.timePerLevel,
       onComplete: () => self.kill()
     });
+
 
   }
 
@@ -208,7 +214,7 @@ export class GameScene extends Phaser.Scene {
     let btnRetry = this.add.image( backgroundGamoOverX + calcX, backgroundGamoOverY + 270, "RetryButton" ).setOrigin(0,0).setDepth(1.1)
     btnRetry.setInteractive( { useHandCursor: true  } );
     btnRetry.setInteractive( { useHandCursor: true  } );
-    btnRetry.on('pointerdown', () => self.startGame() )
+    btnRetry.on('pointerup', () => self.startGame() )
     
     this.menuGameOver.addMultiple([gameOverScreen,highScoretext, scoretext, btnRetry])
 

@@ -12,18 +12,20 @@ export class EnemyHandler {
     private carArray: Car[] = []
     private platformArray: Platform[] = []
     private MAX_ROWS = 5
-    private intervalCreator
+    public intervalCreator = null;
+    public id = Utils.generateId()
 
     constructor( ){
         this.generateStartingEnemies()
 
-        this.enemyCreator()
         this.intervalCreator = setInterval( () => this.enemyCreator() , 3000);
+        this.enemyCreator()
 
         this.enemyCreator = this.enemyCreator.bind( this )
     }
 
     generateStartingEnemies(){
+        
         for( var i = 0; i < this.MAX_ROWS; i++ ){
             let tileX = Utils.rndNumber( 0, consts.BACKGROUND.X_TILE_SIZE )
             let tileCarPosition = { tileX, tileY: i + 7 }
@@ -37,7 +39,7 @@ export class EnemyHandler {
     }
 
     enemyCreator(){
-
+            console.log("enemyCreator")
         for( var i = 0; i < this.MAX_ROWS; i++ ){
             let tileX = Utils.rndNumber( 0, consts.BACKGROUND.X_TILE_SIZE )
             let tileCarPosition = { tileX, tileY: i + 7 }
@@ -47,6 +49,7 @@ export class EnemyHandler {
                 this.requestAnotherEnemy( enemyType.PLATFORM, tilePlatformPosition )
             }
         }
+
     }
 
     createEnemy( type: enemyType, posTile: TilePosition): Enemy {
@@ -95,17 +98,21 @@ export class EnemyHandler {
     private requestAnotherEnemy( type: enemyType, posTile: TilePosition ): void {
         let timer = Utils.rndNumber( consts.CAR.MIN_INTERVAL_CAR, consts.CAR.MAX_INTERVAL_CAR )
         if( type == enemyType.CAR ) posTile.tileX = posTile.tileY % 2 == 0 ? 0 : consts.BACKGROUND.X_TILE_SIZE
-        if( type == enemyType.PLATFORM ) posTile.tileX = -2
-        
+        if( type == enemyType.PLATFORM ){
+            posTile.tileX = -2
+            timer = Utils.rndNumber( consts.CAR.MIN_INTERVAL_CAR + 200, consts.CAR.MAX_INTERVAL_CAR )
+        } 
+
         scene.time.delayedCall( timer, () => {
-            return this.createEnemy( type, posTile )
+            if( this.id == scene.spawnerId )
+                return this.createEnemy( type, posTile )
         }, [], this);
 
     }
 
     public reset(){
-        this.clearBoard()
         clearInterval( this.intervalCreator );
+        this.clearBoard()
     }
 
     private clearBoard(){

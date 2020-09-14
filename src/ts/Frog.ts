@@ -73,11 +73,11 @@ export class Frog extends Phaser.GameObjects.Sprite {
     }
 
     private boundaries(){
-        if( this.x <= 0 || this.x > Utils.halfScreen( 'x', true ) )
+        if( this.x <= 0 || this.x > Utils.halfScreen( 'x', true ) ){
             scene.kill()
+        }
 
         if( this.isRiver() && !this.isPlatform ){
-            //scene.kill()
             console.log("kill")
         }
 
