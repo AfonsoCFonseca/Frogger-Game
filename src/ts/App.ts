@@ -57,6 +57,10 @@ export class GameScene extends Phaser.Scene {
       frameWidth: 60,
       frameHeight: 60,
     });
+    this.load.spritesheet("turtle", "assets/turtle.png", {
+      frameWidth: 60,
+      frameHeight: 60,
+    });
 
     this.load.image("truck", "assets/truck.png");
 
@@ -112,8 +116,9 @@ export class GameScene extends Phaser.Scene {
         this.kill()
         break;
       case enemyType.PLATFORM:
+      case enemyType.TURTLE:
         this.player.isPlatform = true
-        this.float( enemy )
+        this.float( enemy , enemy.enemyType == enemyType.TURTLE ? true : false  )
         break;
     }
 
@@ -145,8 +150,8 @@ export class GameScene extends Phaser.Scene {
 
   }
 
-  float( platform ){
-    this.player.x += platform.getSpeed()
+  float( enemy, inverse:boolean){
+    this.player.x += inverse ? -enemy.getSpeed() : enemy.getSpeed()
   }
 
   startGame(){

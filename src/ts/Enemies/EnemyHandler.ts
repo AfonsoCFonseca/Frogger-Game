@@ -1,6 +1,7 @@
 import { Enemy } from './Enemy'
 import { Car } from './Car'
 import { Platform } from './Platform'
+import { Turtle } from './Turtle'
 import { enemyType, row, TilePosition, directionEnum } from '../game.interfaces'
 import * as consts from "../Utils/consts"
 import { Utils } from '../Utils/utils'
@@ -11,6 +12,7 @@ export class EnemyHandler {
     
     private carArray: Car[] = []
     private platformArray: Platform[] = []
+    private turtleArray: Turtle[] = []
     private MAX_ROWS = 5
     public intervalCreator = null;
     public id = Utils.generateId()
@@ -34,19 +36,36 @@ export class EnemyHandler {
                 let tilePlatformPosition = { tileX, tileY: i + 1 }
                 this.createEnemy( enemyType.PLATFORM, tilePlatformPosition )
             }
+            else if( i == 1 || i == 4 ){
+                let counter = i == 4 ? 2 : 3
+                for( var j = 0; j < counter; j++ ){
+                    let tilePlatformPosition = { tileX: tileX-j, tileY: i + 1 }
+                    this.createEnemy( enemyType.TURTLE, tilePlatformPosition )
+                }
+            }
         }
 
     }
 
     enemyCreator(){
-            console.log("enemyCreator")
+
         for( var i = 0; i < this.MAX_ROWS; i++ ){
             let tileX = Utils.rndNumber( 0, consts.BACKGROUND.X_TILE_SIZE )
-            let tileCarPosition = { tileX, tileY: i + 7 }
-            this.requestAnotherEnemy( enemyType.CAR, tileCarPosition )
+            let posTile = { tileX, tileY: i + 7 }
+
+            posTile.tileX = posTile.tileY % 2 == 0 ? 0 : consts.BACKGROUND.X_TILE_SIZE
+            this.requestAnotherEnemy( enemyType.CAR, posTile )
             if( i == 0 || i == 2 || i == 3 ){
-                let tilePlatformPosition = { tileX, tileY: i + 1 }
-                this.requestAnotherEnemy( enemyType.PLATFORM, tilePlatformPosition )
+                posTile = { tileY: i + 1, tileX: -2 }
+                this.requestAnotherEnemy( enemyType.PLATFORM, posTile )
+            }
+            else if( i == 1 || i == 4 ){
+                let counter = i == 4 ? 2 : 3
+                let posTileArr = []
+                for( var j = 0; j < counter; j++ ){
+                    posTileArr.push( { tileX: 16 - j, tileY: i + 1 } )
+                }
+                this.requestAnotherEnemy( enemyType.TURTLE, posTileArr )
             }
         }
 
@@ -66,6 +85,10 @@ export class EnemyHandler {
                 let platform = new Platform( posTile, direction )
                 this.platformArray.push( platform )
                 return platform
+            case enemyType.TURTLE: 
+                direction = directionEnum.WEST
+                let turtle = new Turtle( posTile, direction)
+                this.turtleArray.push( turtle );
         }
 
     }
@@ -81,6 +104,9 @@ export class EnemyHandler {
             case enemyType.PLATFORM:
                 currentArray = this.platformArray
                 break;
+            case enemyType.TURTLE:
+                currentArray = this.turtleArray
+                break;
             default:
                 console.log( "no type selected")
         }
@@ -95,17 +121,16 @@ export class EnemyHandler {
         
     }
 
-    private requestAnotherEnemy( type: enemyType, posTile: TilePosition ): void {
+    private requestAnotherEnemy( type: enemyType, posTile: TilePosition | TilePosition[] ): void {
         let timer = Utils.rndNumber( consts.CAR.MIN_INTERVAL_CAR, consts.CAR.MAX_INTERVAL_CAR )
-        if( type == enemyType.CAR ) posTile.tileX = posTile.tileY % 2 == 0 ? 0 : consts.BACKGROUND.X_TILE_SIZE
-        if( type == enemyType.PLATFORM ){
-            posTile.tileX = -2
-            timer = Utils.rndNumber( consts.CAR.MIN_INTERVAL_CAR + 200, consts.CAR.MAX_INTERVAL_CAR )
-        } 
+        if( type == enemyType.PLATFORM ) timer = Utils.rndNumber( consts.CAR.MIN_INTERVAL_CAR + 200, consts.CAR.MAX_INTERVAL_CAR )
 
         scene.time.delayedCall( timer, () => {
-            if( this.id == scene.spawnerId )
-                return this.createEnemy( type, posTile )
+            if( this.id == scene.spawnerId ){
+                if( Array.isArray( posTile ) )
+                    posTile.forEach( tile => this.createEnemy( type, tile ) );
+                else return this.createEnemy( type, posTile as TilePosition )
+            }
         }, [], this);
 
     }

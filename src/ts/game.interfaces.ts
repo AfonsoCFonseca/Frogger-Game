@@ -8,7 +8,7 @@ export enum directionEnum {
 export enum enemyType {
     PLATFORM,
     CAR,
-    TOADS,
+    TURTLE,
     CROCODILE
 }
 

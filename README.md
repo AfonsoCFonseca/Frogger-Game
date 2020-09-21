@@ -13,7 +13,7 @@ The tile is the representation of a slot in the map matrix, returns position or 
 ### Player ###
 The player is a simple Phaser.Sprite class that moves around with increment/decrement of 60px for the X and Y axis.
 When the player detects a collision with the Car class, triggers the kill function that animates the frog death animation, resets his position the starting position and decrements 1 life
-When the player detects a collision with the Platform and Toad class, sets his speed equals to the Platform or Toad speed. If the player reaches the boundary of the map dies.
+When the player detects a collision with the Platform and Turtle class, sets his speed equals to the Platform or Turtle speed. If the player reaches the boundary of the map dies.
 
 ### Enemy ###
 Made an abstract class for the Enemies that extends Phaser.Sprite and got as an inheritance the class Platform and Car. The Enemy is responsible for the movement, the boundaries, deletion and communication with the class EnemyHandler

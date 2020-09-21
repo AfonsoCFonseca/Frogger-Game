@@ -62,6 +62,8 @@ export abstract class Enemy extends Phaser.GameObjects.Sprite{
                 return Car.prototype.carBoundary.call( this, this.direction, this.currentTilePosition  )
             case enemyType.PLATFORM: 
                 return Platform.prototype.platformBoundary.call( this, this.x, this.width )
+            case enemyType.TURTLE:
+                return Turtle.prototype.turtleBoundary.call( this, this.x, this.width )
             default:
                 return true
         }
@@ -75,3 +77,4 @@ export abstract class Enemy extends Phaser.GameObjects.Sprite{
 }
 
 import { Platform } from './Platform'
+import { Turtle } from './Turtle'
