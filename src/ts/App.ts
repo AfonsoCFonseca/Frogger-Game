@@ -151,7 +151,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   float( enemy, inverse:boolean){
-    this.player.x += inverse ? -enemy.getSpeed() : enemy.getSpeed()
+    if( enemy.visible )
+      this.player.x += inverse ? -enemy.getSpeed() : enemy.getSpeed()
+    else this.kill()
   }
 
   startGame(){

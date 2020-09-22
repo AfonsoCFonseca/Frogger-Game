@@ -79,6 +79,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
 
         if( this.isRiver() && !this.isPlatform ){
             console.log("kill")
+            //scene.kill()
         }
 
     }

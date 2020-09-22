@@ -7,6 +7,7 @@ import * as consts from "../Utils/consts"
 export class Turtle extends Enemy{
     private speedMap: number[];
     private row: number;
+    body: Phaser.Physics.Arcade.Body;
 
     constructor( posTile: TilePosition, direction: directionEnum ){
         let pos = Utils.convertTileToPosition( posTile )
@@ -22,11 +23,33 @@ export class Turtle extends Enemy{
 
         super( enemyType.TURTLE, gameObj, direction )
 
+
         this.speedMap = [ 0,1.8,0,0, 1.5 ]
         this.row = posTile.tileY
 
         let speed = this.getSpeed()
         this.setSpeed( speed )
+
+        scene.anims.create({
+            key: 'turtleMoving',
+            frames: scene.anims.generateFrameNumbers('turtle', { end: 2 } ),
+            frameRate: 2,
+            repeat: -1
+        });
+
+        scene.anims.create({
+            key: 'turtleDiving',
+            frames: scene.anims.generateFrameNumbers('turtle', { end: 4 } ),
+            frameRate: 2,
+            repeat: -1
+        });
+
+        this.play('turtleMoving');
+
+        // setTimeout(() => {
+        //     this.play( "turtleDiving" )
+        //     this.visible = false
+        // }, 2000);
 
     }
 
