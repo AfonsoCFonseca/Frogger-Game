@@ -65,13 +65,15 @@ export class EnemyHandler {
                 for( var j = 0; j < counter; j++ ){
                     posTileArr.push( { tileX: 16 - j, tileY: i + 1 } )
                 }
-                this.requestAnotherEnemy( enemyType.TURTLE, posTileArr )
+                let rndDiver = Math.floor( Utils.rndNumber(1,10) );
+                let isDiver = rndDiver > 6 ? true : false
+                this.requestAnotherEnemy( enemyType.TURTLE, posTileArr, isDiver )
             }
         }
 
     }
 
-    createEnemy( type: enemyType, posTile: TilePosition): Enemy {
+    createEnemy( type: enemyType, posTile: TilePosition, isDiver: boolean = false): Enemy {
 
         let direction: directionEnum
         switch( type ){
@@ -87,7 +89,7 @@ export class EnemyHandler {
                 return platform
             case enemyType.TURTLE: 
                 direction = directionEnum.WEST
-                let turtle = new Turtle( posTile, direction)
+                let turtle = new Turtle( posTile, direction, isDiver)
                 this.turtleArray.push( turtle );
         }
 
@@ -121,15 +123,16 @@ export class EnemyHandler {
         
     }
 
-    private requestAnotherEnemy( type: enemyType, posTile: TilePosition | TilePosition[] ): void {
+    private requestAnotherEnemy( type: enemyType, posTile: TilePosition | TilePosition[], isDiver: boolean = false): void {
         let timer = Utils.rndNumber( consts.CAR.MIN_INTERVAL_CAR, consts.CAR.MAX_INTERVAL_CAR )
         if( type == enemyType.PLATFORM ) timer = Utils.rndNumber( consts.CAR.MIN_INTERVAL_CAR + 200, consts.CAR.MAX_INTERVAL_CAR )
 
         scene.time.delayedCall( timer, () => {
             if( this.id == scene.spawnerId ){
-                if( Array.isArray( posTile ) )
-                    posTile.forEach( tile => this.createEnemy( type, tile ) );
-                else return this.createEnemy( type, posTile as TilePosition )
+                if( Array.isArray( posTile ) ){
+                    posTile.forEach( tile => this.createEnemy( type, tile, isDiver) );
+                }
+                else return this.createEnemy( type, posTile as TilePosition)
             }
         }, [], this);
 
