@@ -19,6 +19,8 @@ When the player detects a collision with the Platform and Turtle class, sets his
 Made an abstract class for the Enemies that extends Phaser.Sprite and got as an inheritance the class Platform and Car. The Enemy is responsible for the movement, the boundaries, deletion and communication with the class EnemyHandler
 **Platform**
 The Platform instances move from left to right at different speeds, these speeds are declared in an array that differs depending on the left. His getSpeed method is public, so it can set the speed of the frog when it's above the platform
+**Toad**
+The Toad is similar to the Platform class but got a small loop animation for the movement and has a probability of diving back into the water for X seconds and coming back again
 
 **Car**
 The car class represents 5 types of images, where 4 images share the same sprite sheet and 1 single image for the bus. The speed of each car is mapped in an array of numbers, depending on the position of the tracks and the level that player is in.
@@ -43,6 +45,10 @@ I started to focus on completing the game loop, since the starting point to the 
 **Platforms, Body Detection** 
 Made the platforms working with the frog interactions, then made the frog detect if it's located on the riverside of the map and detecting if it's touching a platform. If not, then calls the kill method.
 Changed the frog movement from a grid-based move to an increment/decrement values on both axis, fixing the frog weird movement when above the Platforms or Toads.
+
+**Toads & Goals**
+The toad class is pretty similar to the Platform one, with a small animation and probability of diving for X time under the water. The animation is a 3 frame loop, I made a sprite for a single Toad and stick them together by code, this way I draw only a single sprite of a toad, instead of drawing the same sprite animation 2 or 3 times in the same image. The diving is based on a probability of 20% of the toads spawned and a randomized timer, between 2 seconds and 7 seconds, to play the animation of diving and floating back.
+Made the Goals small empty GameObjects, when the Frog collides them, they draw the Goal.png imagen and increments 1 of 5 goal points. When the player reaches the 5 points, the game resets the position, increments a level and the movements of the player and enemies increments, as well. Still deciding if I'm going to develop the new enemies for each level or leaving the game only with the incremental speed of the enemies for each level
 
 ---------------------------------------------------------------
 # Scratches & Evolution
