@@ -37,18 +37,18 @@ Started by developing the Map, Player and Tile class and created a relation betw
 
 **Enemies & generation** 
 After, I started to create the Enemy, Car and EnemyHandler class. I began by setting the Car on the map, by creating it via EnemyHandler, giving him movement and reacting to the boundaries of the map.
-With that done, I focused on drawing the different cars in the different tracks, as well as giving them different speeds depending on their position
+Having that done, I focused on drawing the different cars in the different tracks, as well, as giving them different speeds depending on their position
 
 **Deaths, GameOver & UI** 
-I started to focus on completing the game loop, since the starting point to the end of the game...So setting variables of lives or timers. resetting the game when the frog loses one life or lose the game and making the GameOver screen. To give some context I started drawing the UI, like icons and time bars, to better understand what's happening.
+I started to focus on completing the game loop, since the starting point to the end of the game...So, setting variables of lives or timers, resetting the game when the frog loses one life or lose the game and making the GameOver screen. To give some context I started drawing the UI, icons and time bars, to better understand what's happening.
 
 **Platforms, Body Detection** 
-Made the platforms working with the frog interactions, then made the frog detect if it's located on the riverside of the map and detecting if it's touching a platform. If not, then calls the kill method.
-Changed the frog movement from a grid-based move to an increment/decrement values on both axis, fixing the frog weird movement when above the Platforms or Toads.
+Made the platforms work with the frog interactions, then made the frog detect if it's located on the riverside of the map and if it's touching a platform. If not, then calls the kill method.
+Changed the frog movement from a grid-based move to an increment/decrement values on both axis, fixing the frog weird movement while above the Platforms or Toads.
 
 **Toads & Goals**
-The toad class is pretty similar to the Platform one, with a small animation and probability of diving for X time under the water. The animation is a 3 frame loop, I made a sprite for a single Toad and stick them together by code, this way I draw only a single sprite of a toad, instead of drawing the same sprite animation 2 or 3 times in the same image. The diving is based on a probability of 20% of the toads spawned and a randomized timer, between 2 seconds and 7 seconds, to play the animation of diving and floating back.
-Made the Goals small empty GameObjects, when the Frog collides them, they draw the Goal.png imagen and increments 1 of 5 goal points. When the player reaches the 5 points, the game resets the position, increments a level and the movements of the player and enemies increments, as well. Still deciding if I'm going to develop the new enemies for each level or leaving the game only with the incremental speed of the enemies for each level
+The toad class is pretty similar to the Platform one, with a small animation and probability of diving for X time under the water. The animation is a 3 frame loop, I made a sprite for a single Toad and stick them together by code, this way I draw only a single sprite of a toad, instead of drawing the same sprite animation 2 or 3 times in the same image. The diving is based on a probability of 20% of the toads spawned and a randomized timer, between 2 seconds and 7 seconds, to play an animation of diving and floating back.
+Made the Goals small empty GameObjects, that when the Frog collides with them, they draw the Goal.png imagen and increments 1 of 5 goal points. When the player reaches the 5 points, the game resets the position, increments a level and the movements of the player and enemies increments, as well. Still deciding if I'm going to develop the new enemies for each level or leaving the game only with the incremental speed of the enemies for each level
 
 ---------------------------------------------------------------
 # Scratches & Evolution
