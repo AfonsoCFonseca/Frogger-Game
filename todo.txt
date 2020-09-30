@@ -1,0 +1,3 @@
+turtles double speed bug
+isPlatform false bug
+reset Frog Goal at GameOver function

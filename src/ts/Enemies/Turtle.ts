@@ -94,7 +94,9 @@ export class Turtle extends Enemy{
         switch( scene.level ){
             case 1: 
                 return this.speedMap[this.row - 1]
-            default: return this.speedMap[this.row - 1] + 0.2;
+            default:
+                this.speedMap[this.row - 1] += 0.2;
+                return this.speedMap[this.row - 1]
         }
     }
 

@@ -66,7 +66,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
     }
     
     public update(){
-
+        console.log( this.isPlatform )
         this.boundaries() 
         this.isPlatform = false
 
@@ -74,12 +74,11 @@ export class Frog extends Phaser.GameObjects.Sprite {
 
     private boundaries(){
         if( this.x <= 0 || this.x > Utils.halfScreen( 'x', true ) ){
-            scene.kill()
+            scene.kill( 'limit of screen' )
         }
-
+        
         if( this.isRiver() && !this.isPlatform ){
-            console.log("kill")
-            //scene.kill()
+            scene.kill( 'drowning' )
         }
 
     }
@@ -111,6 +110,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
                     tilePosition.tileY--
                     this.currentAnimationFrame = 1
                     this.y -= consts.TILE_SIZE
+                    scene.updateScore( 10 )
                 break;
             }
     
@@ -133,7 +133,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
     public death( callback ) {
 
         if( !this.isDying ){
-
+            
             this.play('deathAnimation');
             this.isDying = true
 

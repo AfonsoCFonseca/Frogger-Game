@@ -35,6 +35,7 @@ export class Map {
         this.map = this.createMap()  
 
         this.createGoals()
+        this.spawnRandomBugGoals()
     }
 
     createGoals(){
@@ -48,6 +49,27 @@ export class Map {
 
     resetGoals(){
         this.goals.map( goal => goal.reset() )
+    }
+
+    spawnRandomBugGoals(){
+        
+        let generateTimer = Utils.rndNumber(consts.BUG_GOAL_INTERVAL_MIN, consts.BUG_GOAL_INTERVAL_MAX)
+        setTimeout( () => {
+            let bugGoalPosition: number
+            do{
+                bugGoalPosition = Math.round( Utils.rndNumber(0, 4) )
+            }
+            while( this.isGoalAvailable( bugGoalPosition ) )
+
+            console.log( this.goals[bugGoalPosition ] )
+            this.goals[bugGoalPosition].extraBonus()
+            this.spawnRandomBugGoals()
+            
+        }, generateTimer )
+    }
+
+    isGoalAvailable( bugGoalPosition ){
+        return this.goals[bugGoalPosition ].type == "completed" || this.goals[bugGoalPosition ].type == "bonus"
     }
 
     createMap(): Tile[][]{
@@ -74,22 +96,38 @@ export class Map {
 }
 
 class GoalObj extends Phaser.GameObjects.Image {
+    public type: "empty" | "bonus" | "completed"
+
     constructor(scene, x, y){
         super(scene, x, y, 'goal');
         scene.add.existing(this).setDepth(2)
         this.visible = false
+        this.type = "empty"
         
         this.setSize(20,20)
+
     }
 
     reached(){
+        scene.updateScore( this.type == "bonus" ? 200 : 50 )
+        this.setTexture('goal')
+        this.type = "completed";
         this.visible = true;
         scene.goalsScored++;
     }
 
     reset(){
+        this.type = "empty";
         this.visible = false
     }
 
+    public extraBonus(){
+        this.type = "bonus";
+        this.visible = true;
+        this.setTexture('bug_goal')
+        setTimeout( () => {
+            if( this.type != "completed" ) this.reset()
+        }, consts.BUG_GOAL_TIMER )
+    }
 
 }

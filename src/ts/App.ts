@@ -22,9 +22,14 @@ export class GameScene extends Phaser.Scene {
 
   private level = 1
   private score: number = 0
+  private highScore: number = 0
+  private scoreText;
+  private highScoreText;
+
   private lives: number;
   private lifeImages = []
   public goalsScored = 0
+
 
   private menuGameOver: Phaser.GameObjects.Group;
   
@@ -45,6 +50,7 @@ export class GameScene extends Phaser.Scene {
     this.load.image('log2', 'assets/log2.png');
     this.load.image('log3', 'assets/log3.png');
     this.load.image('life', 'assets/life.png');
+    this.load.image('bug_goal', 'assets/bug_goal.png');
     this.load.spritesheet("frog", "assets/frog.png", {
       frameWidth: 60,
       frameHeight: 60,
@@ -110,10 +116,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   collision( enemy ){
-
+      
     switch( enemy.enemyType ){
       case enemyType.CAR:
-        this.kill()
+        this.kill('car')
         break;
       case enemyType.PLATFORM:
       case enemyType.TURTLE:
@@ -133,7 +139,8 @@ export class GameScene extends Phaser.Scene {
 
   }
 
-  public kill(){
+  public kill( reason: string | null ){
+    console.log("death because: " + reason )
     this.animationDie.stop();
     this.player.death( () => {
       scene.decrementLives()
@@ -153,13 +160,16 @@ export class GameScene extends Phaser.Scene {
   float( enemy, inverse:boolean){
     if( enemy.visible )
       this.player.x += inverse ? -enemy.getSpeed() : enemy.getSpeed()
-    else this.kill()
+    else{
+      this.kill( 'turtle diving')
+    } 
   }
 
   startGame(){
 
     this.timePerLevel = consts.TIME_PER_LEVEL
     this.score = 0
+    this.scoreText.setText(`SCORE: ${this.score}`);
     this.level = 1
 
     this.createLives()
@@ -207,12 +217,12 @@ export class GameScene extends Phaser.Scene {
 
     let gameOverScreen = this.add.image(backgroundGamoOverX, backgroundGamoOverY, "GameOverScreen" ).setDepth(1).setOrigin(0,0)
 
-    let scoretext = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 135, `${this.score}`, {
+    let scoretext1 = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 135, `${this.score}`, {
       fontSize: "30px",
       fill: "#FFFFFF",
     }).setDepth(1.1)
 
-    let highScoretext = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 190, `${this.score}`, {
+    let highScoretext1 = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 190, `${this.score}`, {
       fontSize: "30px",
       fill: "#FFFFFF",
     }).setDepth(1.1)
@@ -223,7 +233,7 @@ export class GameScene extends Phaser.Scene {
     btnRetry.setInteractive( { useHandCursor: true  } );
     btnRetry.on('pointerup', () => self.startGame() )
     
-    this.menuGameOver.addMultiple([gameOverScreen,highScoretext, scoretext, btnRetry])
+    this.menuGameOver.addMultiple([gameOverScreen,highScoretext1, scoretext1, btnRetry])
 
   }
 
@@ -283,6 +293,15 @@ export class GameScene extends Phaser.Scene {
 
   }
 
+  public updateScore( scoreToAdd: number ){
+    this.score += scoreToAdd
+    this.scoreText.setText(`SCORE: ${this.score}`);
+    if( this.score > this.highScore ){
+      this.highScore = this.score;
+      this.highScoreText.setText(`HIGH SCORE: ${this.highScore}`);
+    }
+  }
+
   public decrementLives(){
       let currentLifeImage = this.lifeImages.pop()
       currentLifeImage.destroy()
@@ -311,11 +330,11 @@ export class GameScene extends Phaser.Scene {
 
     let scoreTextX = Utils.halfScreen('x') + 10,
     scoreTextY = Utils.halfScreen('y') - 40
-    let scoreText = this.add.text( scoreTextX, scoreTextY, "SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
-    scoreText.setText(`SCORE: ${this.score}`);
+    this.scoreText = this.add.text( scoreTextX, scoreTextY, "SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
+    this.scoreText.setText(`SCORE: ${this.score}`);
 
-    let highScoreText = this.add.text( scoreTextX + 400, scoreTextY, "HIGH SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
-    highScoreText.setText(`HIGH SCORE: ${this.score}`);
+    this.highScoreText = this.add.text( scoreTextX + 400, scoreTextY, "HIGH SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
+    this.highScoreText.setText(`HIGH SCORE: ${this.highScore}`);
   }
 
 }
@@ -330,9 +349,9 @@ export var config = {
   },
   physics: {
     default: "arcade",
-    arcade: {
-      debug: true,
-    },
+    // arcade: {
+    //   debug: true,
+    // },
   },
   scene: GameScene,
 };

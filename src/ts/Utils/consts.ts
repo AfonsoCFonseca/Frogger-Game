@@ -5,6 +5,9 @@ export const KEY_PRESSED_TIMER = 300
 export const DIFFICULTY_INCREMENT = 0.2
 export const TIME_PER_LEVEL = 25000
 export const GOAL_SIZE = 40
+export const BUG_GOAL_TIMER = 6000
+export const BUG_GOAL_INTERVAL_MIN = 7000
+export const BUG_GOAL_INTERVAL_MAX = 13000
 
 export const CAR = {
     SPEED: 2,
