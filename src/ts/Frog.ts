@@ -66,9 +66,9 @@ export class Frog extends Phaser.GameObjects.Sprite {
     }
     
     public update(){
-        console.log( this.isPlatform )
         this.boundaries() 
-        this.isPlatform = false
+        if( this.body.embedded ) this.isPlatform = true
+        else this.isPlatform = false
 
     }
 

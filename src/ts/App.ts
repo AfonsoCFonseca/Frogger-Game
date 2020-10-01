@@ -92,12 +92,12 @@ export class GameScene extends Phaser.Scene {
 
     this.createMapAndGUI()
 
-    this.startGame()
-
     map = new Map()
     this.player = new Frog({ x: this.frogInitialPosition.x , y: this.frogInitialPosition.y})
 
-    this.physics.add.collider( this.enemiesGroup, this.player, this.collision );
+    this.startGame()
+
+    this.physics.add.overlap( this.enemiesGroup, this.player, this.collision );
     this.physics.add.collider( this.goalObjectGroup, this.player, this.reachGoal );
 
     this.setKeys()
@@ -107,8 +107,8 @@ export class GameScene extends Phaser.Scene {
   update() {
 
     this.keys();
-    this.events.emit( "updateEnemy" );
     this.player.update()
+    this.events.emit( "updateEnemy" );
     if( this.goalsScored >= 5 ){
       this.nextLevel()
     }
@@ -123,8 +123,8 @@ export class GameScene extends Phaser.Scene {
         break;
       case enemyType.PLATFORM:
       case enemyType.TURTLE:
-        this.player.isPlatform = true
         this.float( enemy , enemy.enemyType == enemyType.TURTLE ? true : false  )
+        this.player.isPlatform = true
         break;
     }
 
@@ -158,8 +158,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   float( enemy, inverse:boolean){
-    if( enemy.visible )
+    if( enemy.visible ){
       this.player.x += inverse ? -enemy.getSpeed() : enemy.getSpeed()
+    }
     else{
       this.kill( 'turtle diving')
     } 
@@ -180,6 +181,8 @@ export class GameScene extends Phaser.Scene {
     enemyHandler = new EnemyHandler( )
     this.spawnerId = enemyHandler.id;
 
+    map.resetGoals()
+
   }
 
   startTimer(){
@@ -199,7 +202,7 @@ export class GameScene extends Phaser.Scene {
       repeat: 0,
       ease: 'Linear',
       duration: this.timePerLevel,
-      onComplete: () => self.kill()
+      onComplete: () => self.kill('timer')
     });
 
 
@@ -349,9 +352,9 @@ export var config = {
   },
   physics: {
     default: "arcade",
-    // arcade: {
-    //   debug: true,
-    // },
+    arcade: {
+      debug: true,
+    },
   },
   scene: GameScene,
 };
