@@ -12,6 +12,7 @@ export class Frog extends Phaser.GameObjects.Sprite {
     private currentAnimationFrame: number
     private isDying = false
     public isPlatform = false
+    public idOfTouchingTurtle = null
 
     body!: Phaser.Physics.Arcade.Body
 
@@ -67,8 +68,13 @@ export class Frog extends Phaser.GameObjects.Sprite {
     
     public update(){
         this.boundaries() 
-        if( this.body.embedded ) this.isPlatform = true
-        else this.isPlatform = false
+
+        if( this.body.embedded ) 
+            this.isPlatform = true
+        else{
+            this.idOfTouchingTurtle = null
+            this.isPlatform = false
+        }
 
     }
 

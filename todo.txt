@@ -1,3 +1,2 @@
--> turtles double speed bug
 -> colliding with walls trigger kill function
 -> make ladybug in platform

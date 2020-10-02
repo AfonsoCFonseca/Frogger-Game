@@ -122,9 +122,14 @@ export class GameScene extends Phaser.Scene {
         this.kill('car')
         break;
       case enemyType.PLATFORM:
-      case enemyType.TURTLE:
-        this.float( enemy , enemy.enemyType == enemyType.TURTLE ? true : false  )
         this.player.isPlatform = true
+        this.float( enemy , enemy.enemyType == enemyType.TURTLE ? true : false  )
+        break;
+      case enemyType.TURTLE:
+          this.player.isPlatform = true
+          if( this.player.idOfTouchingTurtle == null ) this.player.idOfTouchingTurtle = enemy.ID
+          this.float( enemy , enemy.enemyType == enemyType.TURTLE ? true : false  )
+
         break;
     }
 
@@ -158,8 +163,16 @@ export class GameScene extends Phaser.Scene {
   }
 
   float( enemy, inverse:boolean){
-    if( enemy.visible ){
-      this.player.x += inverse ? -enemy.getSpeed() : enemy.getSpeed()
+    if( enemy.visible){
+
+      if( enemy.enemyType == enemyType.TURTLE && this.player.idOfTouchingTurtle == enemy.ID )
+        this.player.x += inverse ? -enemy.getSpeed() : enemy.getSpeed()
+
+      if( enemy.enemyType == enemyType.PLATFORM ){
+        this.player.x += inverse ? -enemy.getSpeed() : enemy.getSpeed()
+        this.player.idOfTouchingTurtle = null
+      }
+
     }
     else{
       this.kill( 'turtle diving')
