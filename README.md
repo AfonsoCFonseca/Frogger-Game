@@ -60,6 +60,7 @@ Left undone - For each level incremented the game should start spawning new enem
 # Scratches & Evolution
 
  <p float="left">
+   <img width="186" height="260" src='https://github.com/AfonsoCFonseca/Frogger-Game/blob/master/screenshots/03_08.png'>
    <img width="186" height="260" src='https://github.com/AfonsoCFonseca/Frogger-Game/blob/master/screenshots/09_08.png'>
    <img width="186" height="260" src='https://github.com/AfonsoCFonseca/Frogger-Game/blob/master/screenshots/20_08.png'>
    <img width="186" height="260" src='https://github.com/AfonsoCFonseca/Frogger-Game/blob/master/screenshots/09_09.png'>
