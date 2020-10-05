@@ -61,7 +61,6 @@ export class Map {
             }
             while( this.isGoalAvailable( bugGoalPosition ) )
 
-            console.log( this.goals[bugGoalPosition ] )
             this.goals[bugGoalPosition].extraBonus()
             this.spawnRandomBugGoals()
             

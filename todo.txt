@@ -1,2 +1,1 @@
--> colliding with walls trigger kill function
 -> make ladybug in platform

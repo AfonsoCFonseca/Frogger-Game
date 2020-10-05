@@ -62,6 +62,11 @@ export class Frog extends Phaser.GameObjects.Sprite {
         return ( this.y >= consts.BACKGROUND.RIVER_TOP_HEIGHT && this.y <= consts.BACKGROUND.RIVER_BOTTOM_HEIGHT )
     }
 
+    private isGoalPosition(){
+
+        return Utils.convertPositionToTile( this.getCurrentPosition() ).tileY <= 0
+    }
+
     private setDirection(dir: directionEnum){
         this.currentDirection = dir
     }
@@ -86,6 +91,9 @@ export class Frog extends Phaser.GameObjects.Sprite {
         if( this.isRiver() && !this.isPlatform ){
             scene.kill( 'drowning' )
         }
+
+        if( this.isGoalPosition() )
+            scene.kill( 'limit top position' )
 
     }
 

@@ -9,6 +9,11 @@ export const BUG_GOAL_TIMER = 6000
 export const BUG_GOAL_INTERVAL_MIN = 7000
 export const BUG_GOAL_INTERVAL_MAX = 13000
 
+export const DEFAULT_TILE_SIZE = {
+    frameWidth: 60,
+    frameHeight: 60,
+}
+
 export const CAR = {
     SPEED: 2,
     MIN_INTERVAL_CAR: 500,

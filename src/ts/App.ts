@@ -51,24 +51,13 @@ export class GameScene extends Phaser.Scene {
     this.load.image('log3', 'assets/log3.png');
     this.load.image('life', 'assets/life.png');
     this.load.image('bug_goal', 'assets/bug_goal.png');
-    this.load.spritesheet("frog", "assets/frog.png", {
-      frameWidth: 60,
-      frameHeight: 60,
-    });
-    this.load.spritesheet("cars", "assets/cars.png", {
-      frameWidth: 60,
-      frameHeight: 60,
-    });
-    this.load.spritesheet("death", "assets/death.png", {
-      frameWidth: 60,
-      frameHeight: 60,
-    });
-    this.load.spritesheet("turtle", "assets/turtle.png", {
-      frameWidth: 60,
-      frameHeight: 60,
-    });
-
     this.load.image("truck", "assets/truck.png");
+    this.load.spritesheet("ladybug", "assets/ladybug.png", consts.DEFAULT_TILE_SIZE );
+    this.load.spritesheet("frog", "assets/frog.png", consts.DEFAULT_TILE_SIZE );
+    this.load.spritesheet("cars", "assets/cars.png", consts.DEFAULT_TILE_SIZE );
+    this.load.spritesheet("death", "assets/death.png", consts.DEFAULT_TILE_SIZE );
+    this.load.spritesheet("turtle", "assets/turtle.png", consts.DEFAULT_TILE_SIZE );
+
 
     consts.CANVAS.WIDTH = game.canvas.width
     consts.CANVAS.HEIGHT = game.canvas.height
@@ -116,6 +105,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   collision( enemy ){
+
+    if( enemy.enemyType == "ladybug" ){
+      enemy.destroy()
+      this.updateScore( 200 )
+    } 
       
     switch( enemy.enemyType ){
       case enemyType.CAR:
@@ -129,7 +123,6 @@ export class GameScene extends Phaser.Scene {
           this.player.isPlatform = true
           if( this.player.idOfTouchingTurtle == null ) this.player.idOfTouchingTurtle = enemy.ID
           this.float( enemy , enemy.enemyType == enemyType.TURTLE ? true : false  )
-
         break;
     }
 
@@ -365,9 +358,9 @@ export var config = {
   },
   physics: {
     default: "arcade",
-    arcade: {
-      debug: true,
-    },
+    // arcade: {
+    //   debug: true,
+    // },
   },
   scene: GameScene,
 };
