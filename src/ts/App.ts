@@ -358,9 +358,9 @@ export var config = {
   },
   physics: {
     default: "arcade",
-    arcade: {
-      debug: true,
-    },
+    // arcade: {
+    //   debug: true,
+    // },
   },
   scene: GameScene,
 };
