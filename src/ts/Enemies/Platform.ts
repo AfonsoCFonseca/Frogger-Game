@@ -56,7 +56,7 @@ export class Platform extends Enemy {
 
     private maybeSpawnLadyBug(){
         let prob = Utils.rndNumber(0, 10)
-        if( prob <= 3 ) 
+        if( prob <= 2 ) 
             this.ladyBug = new LadyBug( this, this.posTile )
     }
 
@@ -100,6 +100,9 @@ class LadyBug extends Phaser.GameObjects.Sprite{
 
     updateLadyBug(){
         this.x += this.parentPlatform.getSpeed()
+
+        if( this.x >= Utils.halfScreen( 'x', true ) ) this.destroy()
+
     }
 
 

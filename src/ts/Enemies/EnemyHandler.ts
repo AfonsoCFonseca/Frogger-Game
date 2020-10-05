@@ -145,6 +145,9 @@ export class EnemyHandler {
 
     private clearBoard(){
 
+        let childrens = scene.enemiesGroup.getChildren().filter(e => e.enemyType === "ladybug")
+        childrens.forEach( child => child.destroy() ) 
+
         this.platformArray.forEach( plat => plat.delete() )
         this.carArray.forEach( car =>  car.delete() )
 

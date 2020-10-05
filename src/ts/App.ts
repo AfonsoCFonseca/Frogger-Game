@@ -14,7 +14,7 @@ export class GameScene extends Phaser.Scene {
 
   private player: Frog
   private frogInitialPosition: Position
-  private enemiesGroup: Phaser.GameObjects.Group;
+  public enemiesGroup: Phaser.GameObjects.Group;
   private goalObjectGroup: Phaser.GameObjects.Group;
   private timePerLevel:number
   private animationDie;
@@ -358,9 +358,9 @@ export var config = {
   },
   physics: {
     default: "arcade",
-    // arcade: {
-    //   debug: true,
-    // },
+    arcade: {
+      debug: true,
+    },
   },
   scene: GameScene,
 };
