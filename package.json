@@ -19,9 +19,7 @@
   },
   "homepage": "https://github.com/AfonsoCFonseca/Frogger-Game#readme",
   "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
+    "express": "^4.17.1",
     "phaser": "^3.22.0",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3",
