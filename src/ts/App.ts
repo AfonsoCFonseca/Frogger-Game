@@ -226,15 +226,9 @@ export class GameScene extends Phaser.Scene {
 
     let gameOverScreen = this.add.image(backgroundGamoOverX, backgroundGamoOverY, "GameOverScreen" ).setDepth(1).setOrigin(0,0)
 
-    let scoretext1 = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 135, `${this.score}`, {
-      fontSize: "30px",
-      fill: "#FFFFFF",
-    }).setDepth(1.1)
+    let scoretext1 = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 135, `${this.score}`, { font: 'bold 30px Geneva', color: 'white'}).setDepth(1.1)
 
-    let highScoretext1 = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 190, `${this.score}`, {
-      fontSize: "30px",
-      fill: "#FFFFFF",
-    }).setDepth(1.1)
+    let highScoretext1 = this.add.text( backgroundGamoOverX + 170, backgroundGamoOverY + 190, `${this.score}`, { font: 'bold 30px Geneva', color: 'white'} ).setDepth(1.1)
 
     let calcX = (backgroundGameOverWidth - buttonWidth) / 2
     let btnRetry = this.add.image( backgroundGamoOverX + calcX, backgroundGamoOverY + 270, "RetryButton" ).setOrigin(0,0).setDepth(1.1)
@@ -328,7 +322,7 @@ export class GameScene extends Phaser.Scene {
 
     let halfScreenX = Utils.halfScreen('x')
     let heightTimeText = (game.canvas.height / 2) + (consts.BACKGROUND.HEIGHT / 2) + 12
-    this.add.text( game.canvas.width / 2 + 240, heightTimeText, "TIME" , {fontSize: "35px",fill: "#FFFFFF", fontFamily: 'font1' })
+    this.add.text( game.canvas.width / 2 + 240, heightTimeText, "TIME" , { font: 'bold 35px Geneva', color: 'white'})
 
     let rectWith = 400
     let leftRectX = Utils.halfScreen('x') - rectWith
@@ -339,13 +333,12 @@ export class GameScene extends Phaser.Scene {
 
     let scoreTextX = Utils.halfScreen('x') + 10,
     scoreTextY = Utils.halfScreen('y') - 40
-    this.scoreText = this.add.text( scoreTextX, scoreTextY, "SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
+    this.scoreText = this.add.text( scoreTextX, scoreTextY, "SCORE:",  { font: 'bold 25px Geneva', color: 'white'})
     this.scoreText.setText(`SCORE: ${this.score}`);
 
-    this.highScoreText = this.add.text( scoreTextX + 400, scoreTextY, "HIGH SCORE:",  {fontSize: "25px",fill: "#FFFFFF", fontFamily: 'font1' })
+    this.highScoreText = this.add.text( scoreTextX + 400, scoreTextY, "HIGH SCORE:",  { font: 'bold 25px Geneva', color: 'white'})
     this.highScoreText.setText(`HIGH SCORE: ${this.highScore}`);
   }
-
 }
 
 export var config = {
