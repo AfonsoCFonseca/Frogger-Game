@@ -2,6 +2,19 @@
 Classic Frogger game using javascript and typescript
 
 ---------------------------------------------------------------
+# How to Deploy
+On the project terminal run: 
+```
+npm i;
+npm run build;
+node index
+```
+then access on your browser to: localhost:8080
+
+To access a live version running on a server ( the server may take a couple of minutes to boot, before starting the game )
+-> https://frogger1991.onrender.com/ <-
+( also, it's a slow server )
+
 # Structure
 Created 4 main Classes:
 ### Map ###
